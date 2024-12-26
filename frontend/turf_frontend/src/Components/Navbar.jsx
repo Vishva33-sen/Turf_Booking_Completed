@@ -132,6 +132,8 @@ const Navbar = () => {
             transition: "opacity 0.3s ease", // Smooth transition for dropdown visibility
             minWidth: "160px",
             zIndex: 1000, // Ensure dropdown is above other content
+            marginRight:"40px",
+            marginTop: "35px",
         },
         loginDropdown: {
             position: "absolute",
@@ -146,6 +148,8 @@ const Navbar = () => {
             transition: "opacity 0.3s ease", // Smooth transition for dropdown visibility
             minWidth: "160px",
             zIndex: 1000, // Ensure dropdown is above other content
+            marginRight:"70px",
+            marginTop: "35px",
         },
         signupDropdown: {
             position: "absolute",
@@ -160,6 +164,8 @@ const Navbar = () => {
             transition: "opacity 0.3s ease", // Smooth transition for dropdown visibility
             minWidth: "160px",
             zIndex: 1000, // Ensure dropdown is above other content
+            marginRight:"5px",
+            marginTop: "35px",
         },
         dropdownItem: (isHovered) => ({
             padding: "10px",
@@ -171,6 +177,7 @@ const Navbar = () => {
             marginBottom: "8px",
             transition: "background-color 0.3s",
             backgroundColor: isHovered ? "rgb(0,188,212)" : "transparent", // Hover effect
+
         }),
         logoutPopup: {
             position: "fixed",
@@ -250,9 +257,9 @@ const Navbar = () => {
                     <>
                         <li style={styles.li}>
                             <a
-                                onClick={() => setShowDropdown(!showDropdown)}
+                                onMouseEnter={() => setShowDropdown(!showDropdown)}
                                 style={styles.a(hovered === 2)}
-                                onMouseEnter={() => handleHover(2)}
+                                // onMouseEnter={() => handleHover(2)}
                                 onMouseLeave={handleLeave}
                             >
                                 Menu
@@ -293,9 +300,9 @@ const Navbar = () => {
                     <>
                         <li style={styles.li}>
                             <a
-                                onClick={loginUser}
+                                onMouseEnter={loginUser}
                                 style={styles.a(hovered === 4)}
-                                onMouseEnter={() => handleHover(4)}
+                                // onMouseEnter={() => handleHover(4)}
                                 onMouseLeave={handleLeave}
                             >
                                 Login
@@ -321,9 +328,9 @@ const Navbar = () => {
                         </li>
                         <li style={styles.li}>
                             <a
-                                onClick={signupUser}
+                                onMouseEnter={signupUser}
                                 style={styles.a(hovered === 5)}
-                                onMouseEnter={() => handleHover(5)}
+                                // onMouseEnter={() => handleHover(5)}
                                 onMouseLeave={handleLeave}
                             >
                                 Signup
@@ -382,7 +389,7 @@ const Navbar = () => {
             </ul>
             {showLogoutPopup && (
                 <div style={styles.logoutPopup}>
-                    <p>Are you sure you want to log out?</p>
+                    <div>Are you sure you want to logout?</div>
                     <button
                         style={{ ...styles.popupButton, ...styles.yesButton }}
                         onClick={() => handleLogoutConfirmation(true)}
@@ -397,7 +404,6 @@ const Navbar = () => {
                     </button>
                 </div>
             )}
-
         </div>
     );
 };

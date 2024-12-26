@@ -49,8 +49,8 @@ public class BookingController {
     }
 
     @GetMapping("/bookingdetails")
-    public List<Map<String, Object>> getBookingDetails() {
-        return bookingService.getBookingDetails();
+    public List<Map<String, Object>> getBookingDetails(@RequestParam("adminId") int adminId) {
+        return bookingService.getBookingDetails(adminId);
     }
 
 

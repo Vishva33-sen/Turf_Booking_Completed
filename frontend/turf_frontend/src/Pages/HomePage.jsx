@@ -60,6 +60,11 @@ const HomePage = () => {
                         <h3>Tennis</h3>
                         <p>From casual play to tournaments, we offer top-notch tennis courts for everyone.</p>
                     </div>
+                    <div className={"category-item"}>
+                        <img src="/images/basketball.jpeg" alt="Basketball"/>
+                        <h3>BasketBall</h3>
+                        <p>From friendly games to intense matches, we provide premium basketball courts for players of all levels..</p>
+                    </div>
                 </div>
             </div>
 
@@ -103,13 +108,13 @@ const HomePage = () => {
                 <h2>What Our Users Say</h2>
                 <div className="testimonial-container">
                     <div className="testimonial-item">
-
+                        <img src="/images/profile_photo.jpg" alt="Basketball"/>
                         <p>"The best turf booking experience! The platform is user-friendly, and I got the best turf at
                             the best price." - Rahul K.</p>
                         <div className="rating">⭐⭐⭐⭐⭐</div>
                     </div>
                     <div className="testimonial-item">
-
+                        <img src="/images/profile_photo.jpg" alt="Basketball"/>
                         <p>"Super convenient! I was able to book a spot for my team within minutes. Highly recommended!"
                             - Priya S.</p>
                         <div className="rating">⭐⭐⭐⭐</div>

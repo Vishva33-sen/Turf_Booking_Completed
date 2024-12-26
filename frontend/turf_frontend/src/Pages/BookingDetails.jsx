@@ -8,9 +8,13 @@ const BookingDetails = () => {
 
     useEffect(() => {
         const adminId = localStorage.getItem('adminId'); // Fetch adminId from local storage
-        console.log('adminId');
+        console.log('adminId', adminId);  // Log adminId to check if it's fetched
+
         if (adminId) {
-            axios.get(`http://localhost:8081/bookings/bookingdetails`)
+            // Sending adminId as a query parameter or in headers to the backend
+            axios.get(`http://localhost:8081/bookings/bookingdetails`, {
+                params: { adminId: adminId }  // Send adminId as a query parameter
+            })
                 .then(response => {
                     setBookingDetails(response.data);
                 })

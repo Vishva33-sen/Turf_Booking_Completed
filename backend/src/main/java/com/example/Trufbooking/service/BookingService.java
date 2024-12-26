@@ -19,14 +19,14 @@ public class BookingService {
         this.bookingRepository = bookingRepository;
     }
 
-    public List<Map<String, Object>> getBookingDetails() {
-        List<Object[]> result = bookingRepository.getBookingDetailsWithTurfName();
+
+    public List<Map<String, Object>> getBookingDetails(int adminId) {
+        List<Object[]> result = bookingRepository.getBookingDetailsWithTurfName(adminId);
         List<Map<String, Object>> bookingDetails = new ArrayList<>();
 
         for (Object[] row : result) {
             Booking booking = (Booking) row[0];
             String turfname = (String) row[1];
-
 
             Map<String, Object> detail = new HashMap<>();
             detail.put("bookingId", booking.getBooking_id());
@@ -35,7 +35,6 @@ public class BookingService {
             detail.put("payedAmt", booking.getPayed_amt());
             detail.put("time", booking.getTime());
             detail.put("turfname", turfname);
-
 
             bookingDetails.add(detail);
         }

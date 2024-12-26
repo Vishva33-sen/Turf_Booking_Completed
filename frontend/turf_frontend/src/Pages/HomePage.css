@@ -1,0 +1,123 @@
+
+
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.landing {
+  padding-top: 120px;
+
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+.landing h1 {
+  font-size: 36px;
+  margin-bottom: 15px;
+  color: #00bcd4;
+}
+
+.landing p {
+  font-size: 18px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.footer {
+  position: fixed;
+  width: 100%;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+.app{
+  width: 100%;
+  height: 100%;
+  left:0;
+  padding-left: 0;
+  padding-right:0 ;
+
+}
+
+.cta a {
+  text-decoration: none;
+  color: white;
+  background-color: #00bcd4;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  margin-left:35px;
+}
+
+.cta a:hover {
+  background-color: #008c9e;
+
+}
+.cta h2{
+  color:white;
+}
+.top{
+  padding:0;
+  margin-left: 0;
+  margin-right: 0;
+  height:100vh;
+  width:100%;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+}
+.login-box {
+  width: 200px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #007BFF;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.login-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.login-box h3 {
+  margin: 0;
+  color: #007BFF;
+  font-size: 18px;
+}
+ .login-box-container {
+   display: flex;
+   justify-content: center;
+   gap: 20px;
+   flex-direction: column;
+   margin-top: 50px;
+ }
+

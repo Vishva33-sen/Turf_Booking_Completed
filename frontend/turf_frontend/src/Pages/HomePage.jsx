@@ -1,10 +1,28 @@
-import { useNavigate } from "react-router-dom";
+import  { useEffect } from "react";
+import { useInView } from 'react-intersection-observer'; // for scroll animations
 
 const HomePage = () => {
-    const navigate = useNavigate();
+    // Smooth scroll to "About Us" section
+    useEffect(() => {
+        const handleScroll = () => {
+            const hash = window.location.hash;
+            if (hash && document.querySelector(hash)) {
+                const target = document.querySelector(hash);
+                target.scrollIntoView({ behavior: "smooth" });
+            }
+        };
+        window.addEventListener("hashchange", handleScroll);
+        return () => window.removeEventListener("hashchange", handleScroll);
+    }, []);
+
+    // Intersection observer hook for scroll animation
+    const { ref: aboutRef, inView: aboutInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+    const { ref: featuresRef, inView: featuresInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+    const { ref: testimonialsRef, inView: testimonialsInView } = useInView({ triggerOnce: true, threshold: 0.1 });
 
     return (
         <div className="home-container">
+            {/* Video Background Section */}
             <div className="video-container">
                 <video autoPlay loop muted>
                     <source src="/src/assets/videos/home_background.mp4" type="video/mp4" />
@@ -12,337 +30,304 @@ const HomePage = () => {
                 </video>
             </div>
 
+            {/* Landing Section */}
             <div className="landing">
-                <h1 className="animate_animated animate_fadeInUp">Welcome to TurfBooking System!</h1>
+                <h1>Welcome to TurfBooking System!</h1>
                 <p>Your Ultimate Sports Destination</p>
                 <p>
-                    Whether you're a casual player or a pro athlete, we make booking your favorite sports turf simple,
-                    fast, and hassle-free.
+                    Whether you're a casual player or a pro athlete, TurfBooking makes booking sports facilities simple, fast, and hassle-free.
+                </p>
+                <a href="#about" className="cta-button">Learn More</a>
+            </div>
+
+            {/* Turf Categories Section */}
+            <div className="categories-section">
+                <h2>Our Turf Categories</h2>
+                <div className="categories-container">
+                    <div className="category-item">
+                        <img src="/images/cricket.jpg" alt="Cricket" />
+                        <h3>Cricket</h3>
+                        <p>Book premium cricket turfs for your next match. Play like a pro!</p>
+                    </div>
+                    <div className="category-item">
+                        <img src="/images/football.jpg" alt="Football" />
+                        <h3>Football</h3>
+                        <p>Get your football game on with the best turfs for all levels of play.</p>
+                    </div>
+                    <div className="category-item">
+                        <img src="/images/tennis.jpeg" alt="Tennis" />
+                        <h3>Tennis</h3>
+                        <p>From casual play to tournaments, we offer top-notch tennis courts for everyone.</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* About Us Section */}
+            <div id="about" ref={aboutRef} className={`about-section ${aboutInView ? 'fade-in' : ''}`}>
+                <h2>About Us</h2>
+                <p>
+                    At TurfBooking System, we are dedicated to providing a seamless experience for sports enthusiasts. We partner with premium venues across the country to offer top-quality turfs for a variety of sports including football, cricket, tennis, and more.
+                </p>
+                <p>
+                    Our mission is to foster community, promote healthy living, and ensure easy access to sports facilities. Join us today and elevate your game with hassle-free bookings!
                 </p>
             </div>
 
+            {/* Features Section */}
+            <div ref={featuresRef} className={`features ${featuresInView ? 'fade-in' : ''}`}>
+                <h2 className="features-title">Why Choose Us?</h2>
+                <div className="features-container">
+                    <div className="feature-item">
+                        <h3>Easy Booking</h3>
+                        <p>Book your turf in just a few clicks, anytime and anywhere. We make it simple for you!</p>
+                    </div>
+                    <div className="feature-item">
+                        <h3>Instant Availability</h3>
+                        <p>Get real-time updates on available slots at your favorite turfs. Never miss your game!</p>
+                    </div>
+                    <div className="feature-item">
+                        <h3>Affordable Pricing</h3>
+                        <p>Choose from a range of affordable options that fit your budget without compromising quality.</p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Testimonials Section */}
+            <div ref={testimonialsRef} className={`testimonials ${testimonialsInView ? 'fade-in' : ''}`}>
+                <h2>What Our Users Say</h2>
+                <div className="testimonial-container">
+                    <div className="testimonial-item">
+                        <img src="/images/user1.jpg" alt="User 1" />
+                        <p>"The best turf booking experience! The platform is user-friendly, and I got the best turf at the best price." - Rahul K.</p>
+                        <div className="rating">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <div className="testimonial-item">
+                        <img src="/images/user1.jpg" alt="User 2" />
+                        <p>"Super convenient! I was able to book a spot for my team within minutes. Highly recommended!" - Priya S.</p>
+                        <div className="rating">⭐⭐⭐⭐</div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Call to Action Section */}
             <div className="cta">
-                <h2 className="animate_animated animate_bounceIn">Get Started Today!</h2>
+                <h2>Get Started Today!</h2>
                 <a href="/signup" className="cta-button">Sign Up Now</a>
             </div>
 
-            {/* Sports Icons */}
-            <div className="sports-icons">
-                <div className="ball-soccer"></div>
-                <div className="ball-tennis"></div>
-                <div className="ball-basketball"></div>
-            </div>
+            <style>{`
+                .home-container {
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 100vh;
+                    justify-content: space-between;
+                    padding-top: 80px;
+                    color: white; 
+                    overflow: hidden;
+                }
 
-            {/* Why Choose Us Section */}
-            <section className="features">
-                <h2 className="section-title">Why Choose Us?</h2>
-                <div className="feature-items">
-                    <div className="feature-item">
-                        <img src="https://example.com/icon-easy-booking.png" alt="Easy Booking" />
-                        <h3>Easy Booking</h3>
-                        <p>Book your favorite turf in just a few clicks!</p>
-                    </div>
-                    <div className="feature-item">
-                        <img src="https://example.com/icon-availability.png" alt="Availability Check" />
-                        <h3>Real-time Availability</h3>
-                        <p>Check the availability of turf instantly and plan your session.</p>
-                    </div>
-                    <div className="feature-item">
-                        <img src="https://example.com/icon-secure-payment.png" alt="Secure Payment" />
-                        <h3>Secure Payment</h3>
-                        <p>Pay securely with multiple payment options.</p>
-                    </div>
-                </div>
-            </section>
+                .video-container {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: hidden;
+                    z-index: -1;
+                }
 
-            {/* Turf Categories Section */}
-            <section className="turf-categories">
-                <h2 className="section-title">Explore Our Turf Categories</h2>
-                <div className="category-items">
-                    <div className="category-item">
-                        <img src="https://example.com/football-turf.jpg" alt="Football Turf" />
-                        <h3>Football</h3>
-                        <p>Find the best football turfs near you and enjoy the game!</p>
-                    </div>
-                    <div className="category-item">
-                        <img src="https://example.com/tennis-turf.jpg" alt="Tennis Turf" />
-                        <h3>Tennis</h3>
-                        <p>Book a tennis court and improve your skills with friends!</p>
-                    </div>
-                    <div className="category-item">
-                        <img src="https://example.com/basketball-turf.jpg" alt="Basketball Turf" />
-                        <h3>Basketball</h3>
-                        <p>Find the perfect court for your next basketball match!</p>
-                    </div>
-                </div>
-            </section>
+                .video-container video {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
 
-            {/* Customer Reviews Section */}
-            <section className="customer-reviews">
-                <h2 className="section-title">Customer Reviews</h2>
-                <div className="review-items">
-                    <div className="review-item">
-                        <h3>Chirag Chedda</h3>
-                        <p>
-                            <span className="stars">★★★★★</span>
-                            Have been using this app to book cricket turfs, and it's the best I have come across. The turf options are great, and their customer support team is also very helpful and quick to respond. I regularly get offers and coupons, which gives a good discount for my turf bookings.
-                        </p>
-                        <span className="user-type">Pay N Play User</span>
-                    </div>
-                    <div className="review-item">
-                        <h3>Jyothslina Paul</h3>
-                        <p>
-                            <span className="stars">★★★★★</span>
-                            I've been using KheloMore for football training for my kid at the comfort of my residence. The coaches of KheloMore are really knowledgeable and treat kids with care and caution. Recommend 10/10.
-                        </p>
-                        <span className="user-type">Coaching User</span>
-                    </div>
-                    <div className="review-item">
-                        <h3>Harsh Agarwal</h3>
-                        <p>
-                            <span className="stars">★★★★★</span>
-                            Woke up with a hangover on a Saturday morning to a message on Bumble suggesting an offbeat date. So, I booked a badminton session on KheloMore. The app is sleek and fast, has plenty of options, time slots, and offers. It was a great first date.
-                        </p>
-                        <span className="user-type">Pay N Play User</span>
-                    </div>
-                </div>
-                <p className="usage-info">Join 100+ users who trust and love using our app for booking their favorite sports turfs and training sessions!</p>
-            </section>
+                .landing {
+                    padding: 40px 20px 30px;
+                    text-align: center;
+                    position: relative;
+                    z-index: 2;
+                    color: #f1f1f1;
+                }
 
-            <style>
-                {`
-                    .home-container {
-                        display: flex;
-                        flex-direction: column;
-                        min-height: 100vh;
-                        justify-content: flex-start;
-                    }
+                .landing h1 {
+                    font-size: 48px;
+                    color: #00bcd4;
+                    margin-bottom: 20px;
+                    font-family: 'Roboto', sans-serif;
+                    font-weight: bold;
+                }
 
-                    .video-container {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        overflow: hidden;
-                        z-index: -1;
-                    }
+                .landing p {
+                    font-size: 22px;
+                    line-height: 1.6;
+                    margin-bottom: 30px;
+                    max-width: 900px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    font-family: 'Arial', sans-serif;
+                }
 
-                    .video-container video {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
+                .cta-button {
+                    margin:50px;
+                    text-decoration: none;
+                    color: white;
+                    background-color: #008c9e;
+                    padding: 15px 75px;
+                    margin-bottom:50px;
+                    margin-left:650px;
+                    font-size: 20px;
+                    border-radius: 5px;
+                    transition: background-color 0.3s;
+                    cursor: pointer;
+                }
+                
+                .cta h2{
+                
+                    margin-left:680px;
+                    
+                    margin-bottom:50px;
+                }
+                
 
-                    .landing {
-                        padding-top: 120px;
-                        text-align: center;
-                        position: relative;
-                        z-index: 2;
-                        color: white;
-                        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-                        padding: 20px;
-                        border-radius: 8px;
-                    }
+                .cta-button:hover {
+                    background-color: #006e7f;
+                }
 
-                    .landing h1 {
-                        font-size: 36px;
-                        margin-bottom: 15px;
-                        color: #00bcd4;
-                    }
+                .categories-section {
+                    text-align: center;
+                    margin-top: 50px;
+                    color: white;
+                }
 
-                    .landing p {
-                        font-size: 18px;
-                        line-height: 1.8;
-                        margin-bottom: 20px;
-                        max-width: 800px;
-                        margin-left: auto;
-                        margin-right: auto;
-                    }
+                .categories-container {
+                    display: flex;
+                    justify-content: center;
+                    gap: 40px;
+                    margin-top: 20px;
+                }
 
-                    .cta {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        text-align: center;
-                        margin-top: 50px;
-                        padding: 20px;
-                        background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-                        border-radius: 8px;
-                    }
+                .category-item {
+                    background-color: rgba(0, 0, 0, 0.6);
+                    padding: 20px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+                    width: 250px;
+                    text-align: center;
+                    color: white;
+                    transition: transform 0.3s;
+                }
 
-                    .cta h2 {
-                        color: white;
-                        margin-bottom: 15px;
-                    }
+                .category-item img {
+                    width: 100%;
+                    height: 150px;
+                    object-fit: cover;
+                    border-radius: 10px;
+                    margin-bottom: 15px;
+                }
 
-                    .cta a {
-                        text-decoration: none;
-                        color: white;
-                        background-color: #00bcd4;
-                        padding: 10px 20px;
-                        font-size: 18px;
-                        font-weight: 500;
-                        border-radius: 5px;
-                        transition: background-color 0.3s;
-                        margin-top: 10px;
-                    }
+                .category-item:hover {
+                    transform: scale(1.1);
+                }
 
-                    .cta a:hover {
-                        background-color: #008c9e;
-                    }
+                .about-section, .features, .testimonials {
+                    opacity: 0;
+                    transform: translateY(50px);
+                    transition: opacity 1s, transform 1s;
+                }
 
-                    .sports-icons {
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        display: flex;
-                        gap: 20px;
-                        z-index: 2;
-                    }
+                .fade-in {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
 
-                    .sports-icons div {
-                        width: 50px;
-                        height: 50px;
-                        background-size: cover;
-                        animation: floating 4s ease-in-out infinite;
-                    }
+                .about-section {
+                    background-color: rgba(0, 0, 0, 0.7); 
+                    padding: 40px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+                    margin: 50px auto;
+                    max-width: 1200px;
+                    text-align: center;
+                    font-family: 'Arial', sans-serif;
+                }
 
-                    .ball-soccer {
-                        background-image: url('https://example.com/soccer-ball.png');
-                        animation-delay: 0s;
-                    }
+                .features-title {
+                    text-align: center;
+                    font-weight: 700;
+                    font-size: 36px;
+                    color: #fff;
+                    margin-bottom: 40px;
+                }
 
-                    .ball-tennis {
-                        background-image: url('https://example.com/tennis-ball.png');
-                        animation-delay: 1s;
-                    }
+                .features {
+                    background-color: rgb(125, 125, 125, 0.8);
+                    color: white;  
+                    padding: 30px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+                    margin: 50px auto;
+                    max-width: 1200px;
+                    text-align: center;
+                }
 
-                    .ball-basketball {
-                        background-image: url('https://example.com/basketball.png');
-                        animation-delay: 2s;
-                    }
+                .features-container {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                    gap: 30px;
+                    width: 100%;
+                }
 
-                    .features {
-                        background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
-                        padding: 60px 20px;
-                        text-align: center;
-                        color: white;
-                    }
+                .feature-item {
+                    background-color: white;
+                    padding: 30px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                    width: 300px;
+                    font-weight: bold;
+                    color: black;
+                    text-align: center;
+                    cursor: pointer;
+                    font-family: 'Arial', sans-serif;
+                }
 
-                    .section-title {
-                        font-size: 32px;
-                        color: #00bcd4;
-                        margin-bottom: 40px;
-                    }
+                .feature-item:hover {
+                    transform: scale(1.1);
+                    font-weight: bolder;
+                }
 
-                    .feature-items {
-                        display: flex;
-                        justify-content: space-around;
-                        gap: 30px;
-                    }
+                .testimonial-container {
+                    display: flex;
+                    gap: 40px;
+                    justify-content: center;
+                    align-items: center;
+                    flex-wrap: wrap;
+                }
 
-                    .feature-item {
-                        text-align: center;
-                        max-width: 300px;
-                    }
+                .testimonial-item {
+                    text-align: center;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    padding: 20px;
+                    border-radius: 12px;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+                    color: white;
+                    max-width: 250px;
+                }
 
-                    .feature-item img {
-                        width: 60px;
-                        height: 60px;
-                        margin-bottom: 20px;
-                    }
+                .testimonial-item img {
+                    width: 100%;
+                    height: 150px;
+                    object-fit: cover;
+                    border-radius: 12px;
+                    margin-bottom: 15px;
+                }
 
-                    .feature-item h3 {
-                        font-size: 22px;
-                        margin-bottom: 10px;
-                    }
-
-                    .feature-item p {
-                        font-size: 16px;
-                        color: #fff;
-                    }
-
-                    .turf-categories {
-                        background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
-                        padding: 60px 20px;
-                        text-align: center;
-                        color: white;
-                    }
-
-                    .category-items {
-                        display: flex;
-                        justify-content: space-around;
-                        gap: 30px;
-                    }
-
-                    .category-item {
-                        text-align: center;
-                        max-width: 300px;
-                    }
-
-                    .category-item img {
-                        width: 100%;
-                        height: 200px;
-                        object-fit: cover;
-                        margin-bottom: 20px;
-                    }
-
-                    .category-item h3 {
-                        font-size: 22px;
-                        margin-bottom: 10px;
-                    }
-
-                    .category-item p {
-                        font-size: 16px;
-                        color: #fff;
-                    }
-
-                    .customer-reviews {
-                        background: rgba(0, 0, 0, 0.4); /* Semi-transparent background */
-                        padding: 60px 20px;
-                        text-align: center;
-                        color: white;
-                    }
-
-                    .review-items {
-                        display: flex;
-                        flex-direction: column;
-                        gap: 30px;
-                        align-items: center;
-                    }
-
-                    .review-item {
-                        text-align: left;
-                        max-width: 800px;
-                        background: rgba(255, 255, 255, 0.1);
-                        padding: 20px;
-                        border-radius: 8px;
-                        color: #fff;
-                    }
-
-                    .review-item h3 {
-                        font-size: 20px;
-                        margin-bottom: 10px;
-                    }
-
-                    .review-item p {
-                        font-size: 16px;
-                    }
-
-                    .review-item .stars {
-                        color: gold;
-                    }
-
-                    .usage-info {
-                        margin-top: 30px;
-                        font-size: 18px;
-                        color: #00bcd4;
-                    }
-                `}
-            </style>
+                .testimonial-item .rating {
+                    color: #ff9900;
+                    font-size: 18px;
+                }
+            `}</style>
         </div>
     );
 };

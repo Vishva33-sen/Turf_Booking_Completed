@@ -53,6 +53,7 @@ const PaymentPage = () => {
             }
         }
     };
+
     const handlePayNow = async () => {
         const storedTurfDetails = JSON.parse(localStorage.getItem("turfDetails"));
         const storedSelectedSlots = JSON.parse(localStorage.getItem("selectedSlots"));
@@ -124,6 +125,7 @@ const PaymentPage = () => {
             alert("No turf or slots selected, or email missing.");
         }
     };
+
     return (
         <div style={styles.pageContainer}>
             <div style={styles.paymentWrapper}>
@@ -232,6 +234,9 @@ const PaymentPage = () => {
 const styles = {
     pageContainer: {
         backgroundImage: `url(${BG})`,
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -302,7 +307,7 @@ const styles = {
     },
     submitButton: {
         padding: '12px 20px',
-        backgroundColor: '#4CAF50',
+        background: "linear-gradient(135deg, #00d4ff, #007bff)",
         color: '#fff',
         border: 'none',
         borderRadius: '4px',

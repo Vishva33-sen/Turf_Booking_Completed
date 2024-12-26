@@ -4,8 +4,10 @@ import BG from "../assets/sports_11zon.jpg";
 import cardImage from "../assets/creditcard.jpg"; // Add the image for Credit/Debit Card
 import upiImage from "../assets/upi.png";
 import axios from "axios"; // Add the image for UPI
+import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 
 const PaymentPage = () => {
+    const navigate = useNavigate(); // Initialize navigate
     const [selectedPayment, setSelectedPayment] = useState('');
     const [showMessage, setShowMessage] = useState(false); // For displaying the success message
     const [isCardOrUpi, setIsCardOrUpi] = useState(false); // To track if it's Credit/Debit Card or UPI
@@ -116,7 +118,8 @@ const PaymentPage = () => {
                 }
 
                 alert("All bookings added and slots updated successfully!");
-                // navigate("/payment"); // Redirect to payment page
+                // Navigate to /locationandsports after success
+                navigate("/locationandsports");
             } catch (error) {
                 console.error("Error:", error);
                 alert("Error while saving bookings. Please try again.");
@@ -329,13 +332,14 @@ const styles = {
     },
     successMessage: {
         marginTop: '20px',
-        padding: '20px',
+        padding: '10px 20px', // Reduced vertical padding to make it less tall
         backgroundColor: '#28a745',
         color: '#fff',
         borderRadius: '5px',
-        fontSize: '18px',
+        fontSize: '16px', // Adjusted font size to maintain readability
         textAlign: 'center',
     },
+
 
     // Specific colors for payment options
     upi: {
@@ -355,4 +359,5 @@ const styles = {
         color: '#fff',
     },
 };
+
 export default PaymentPage;

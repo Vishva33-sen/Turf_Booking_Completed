@@ -11,6 +11,7 @@ const Navbar = () => {
     const [hovered, setHovered] = useState(null); // Track hover state
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); // Track if user is logged in
     const [isAdmin, setIsAdmin] = useState(false); // Track if user is admin
+    const [showLogoutPopup, setShowLogoutPopup] = useState(false); // Track logout popup visibility
 
     const email = localStorage.getItem("email");
     const role = localStorage.getItem("role"); // Get user role (admin or user)
@@ -46,7 +47,7 @@ const Navbar = () => {
         setShowDropdown(false);
         setIsUserLoggedIn(false); // Set the state to logged out
         setIsAdmin(false); // Set the state to not admin
-        navigate("/home"); // Navigate to the home page after logout
+        navigate("/"); // Navigate to the home page after logout
     };
 
     const toggleDropdown = () => {
@@ -171,6 +172,42 @@ const Navbar = () => {
             transition: "background-color 0.3s",
             backgroundColor: isHovered ? "rgb(0,188,212)" : "transparent", // Hover effect
         }),
+        logoutPopup: {
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "rgba(0,0,0,0.8)",
+            color: "#fff",
+            padding: "20px",
+            borderRadius: "5px",
+            zIndex: 1001,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+        },
+        popupButton: {
+            marginTop: "10px",
+            padding: "10px 20px",
+            color: "#fff",
+            border: "none",
+            cursor: "pointer",
+            borderRadius: "5px",
+            transition: "background 0.3s ease", // Smooth transition for background
+        },
+        yesButton: {
+            background: "linear-gradient(45deg, red, darkred)",
+        },
+        noButton: {
+            background: "linear-gradient(45deg, blue, darkblue)",
+        },
+    };
+
+    const handleLogoutConfirmation = (confirm) => {
+        if (confirm) {
+            logoutUser();
+        }
+        setShowLogoutPopup(false);
     };
 
     return (
@@ -179,7 +216,7 @@ const Navbar = () => {
             <ul style={styles.ul}>
                 <li style={styles.li}>
                     <a
-                        href="/home"
+                        href="/"
                         style={styles.a(hovered === 0)}
                         onMouseEnter={() => handleHover(0)}
                         onMouseLeave={handleLeave}
@@ -261,7 +298,7 @@ const Navbar = () => {
                                 onMouseEnter={() => handleHover(4)}
                                 onMouseLeave={handleLeave}
                             >
-                            Login
+                                Login
                             </a>
                             <div style={styles.loginDropdown}>
                                 <a
@@ -314,14 +351,12 @@ const Navbar = () => {
                 ) : (
                     <li style={styles.li}>
                         {isAdmin ? (
-                            // For Admin: Only show Logout
-                            <div style={{color: "red"}} onClick={logoutUser}>
-                                <a
-                                    style={styles.dropdownItem(false)}
-                                    onClick={logoutUser}
-                                >
-                                    Logout
-                                </a>
+                            // For Admin: Display first letter of email and show popup on click
+                            <div
+                                style={styles.profilePic}
+                                onClick={() => setShowLogoutPopup(true)}
+                            >
+                                {firstLetter}
                             </div>
                         ) : (
                             // For Regular User: Show profile picture with first letter
@@ -343,10 +378,26 @@ const Navbar = () => {
                             </div>
                         )}
                     </li>
-
-
                 )}
             </ul>
+            {showLogoutPopup && (
+                <div style={styles.logoutPopup}>
+                    <p>Are you sure you want to log out?</p>
+                    <button
+                        style={{ ...styles.popupButton, ...styles.yesButton }}
+                        onClick={() => handleLogoutConfirmation(true)}
+                    >
+                        Yes
+                    </button>
+                    <button
+                        style={{ ...styles.popupButton, ...styles.noButton }}
+                        onClick={() => handleLogoutConfirmation(false)}
+                    >
+                        No
+                    </button>
+                </div>
+            )}
+
         </div>
     );
 };

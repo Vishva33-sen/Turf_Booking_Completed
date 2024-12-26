@@ -19,7 +19,6 @@ import AddTurfForm from "./Pages/AddTurfForm.jsx";
 import UpdateTurf from "./Pages/UpdateTurf.jsx";
 import EditTurf from "./Pages/EditTurf.jsx";
 import SetSlot from "./Pages/SetSlot.jsx";
-import FinalPay from "./Pages/FinalPay.jsx";
 import BookingDetails from "./Pages/BookingDetails.jsx";
 import PaymentPage from "./Pages/FinalPay.jsx";
 
@@ -31,7 +30,7 @@ const App = () => {
               <AuthProvider>
                   <Navbar />
                   <Routes>
-                      <Route path="/home" element={<HomePage />} />
+                      <Route path="/" element={<HomePage />} />
                       <Route path="/signup" element={<SignupPage />} />
                       <Route path="/login" element={<LoginPage />} />
                       <Route path="/location" element={

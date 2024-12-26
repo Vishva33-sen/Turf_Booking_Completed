@@ -1,93 +1,125 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import BG from "../assets/sports_11zon.jpg";
 
 const BookingDetails = () => {
     const [bookingDetails, setBookingDetails] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Fetch data from the backend using Axios
-        axios.get('http://localhost:8081/bookings/bookingdetails')
-            .then(response => {
-                setBookingDetails(response.data);
-            })
-            .catch(error => {
-                setError('Error fetching data: ' + error.message);
-                console.error('Error fetching data:', error);
-            });
+        const adminId = localStorage.getItem('adminId'); // Fetch adminId from local storage
+        console.log('adminId');
+        if (adminId) {
+            axios.get(`http://localhost:8081/bookings/bookingdetails`)
+                .then(response => {
+                    setBookingDetails(response.data);
+                })
+                .catch(error => {
+                    setError('Error fetching data: ' + error.message);
+                    console.error('Error fetching data:', error);
+                });
+        } else {
+            setError("Admin ID is not found in local storage.");
+        }
     }, []);
 
+    const styles = {
+        bookingContainer: {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            padding: '20px',
+            boxSizing: 'border-box',
+            backgroundImage: `url(${BG})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+        },
+        bookingWrapper: {
+            background: 'rgba(30, 30, 47, 0.85)',
+            padding: '40px 50px',
+            borderRadius: '15px',
+            width: '80%',
+            maxWidth: '1000px',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+            textAlign: 'center',
+            color: '#fff',
+        },
+        pageTitle: {
+            fontSize: '30px',
+            marginBottom: '20px',
+            fontWeight: '600',
+            color: '#fff',
+            textShadow: '2px 2px 5px rgba(0, 0, 0, 0.4)',
+        },
+        error: {
+            color: '#ff4d4d',
+            fontSize: '16px',
+            marginBottom: '20px',
+        },
+        bookingTable: {
+            width: '100%',
+            borderCollapse: 'collapse',
+            marginTop: '20px',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+            borderRadius: '8px',
+            overflow: 'hidden',
+        },
+        thTdCommon: {
+            padding: '14px 18px',
+            textAlign: 'center',
+            border: '1px solid #ddd',
+            fontSize: '15px',
+            transition: 'background-color 0.3s ease',
+        },
+        th: {
+            backgroundColor: '#2d3a4b',
+            color: '#fff',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+        },
+        td: {
+            backgroundColor: '#3b4c62',
+            color: '#f3f4f6',
+        },
+        trEven: {
+            backgroundColor: '#4e5a6c',
+        },
+    };
+
     return (
-        <div className="booking-container">
-            <h1>Booking Details</h1>
-            {error && <p>{error}</p>}
-            <table className="booking-table">
-                <thead>
-                <tr>
-                    <th>Booking ID</th>
-                    <th>Date</th>
-                    <th>Email</th>
-                    <th>Paid Amount</th>
-                    <th>Time</th>
-                    <th>Turf Name</th>
-                </tr>
-                </thead>
-                <tbody>
-                {bookingDetails.map((detail, index) => (
-                    <tr key={index}>
-                        <td>{detail.bookingId}</td>
-                        <td>{detail.date}</td>
-                        <td>{detail.email}</td>
-                        <td>{detail.payedAmt}</td>
-                        <td>{detail.time.join(', ')}</td>
-                        <td>{detail.turfname}</td>
+        <div style={styles.bookingContainer}>
+            <div style={styles.bookingWrapper}>
+                <h1 style={styles.pageTitle}>Booking Details</h1>
+                {error && <p style={styles.error}>{error}</p>}
+                <table style={styles.bookingTable}>
+                    <thead>
+                    <tr>
+                        <th style={{ ...styles.th, ...styles.thTdCommon }}>Booking ID</th>
+                        <th style={{ ...styles.th, ...styles.thTdCommon }}>Date</th>
+                        <th style={{ ...styles.th, ...styles.thTdCommon }}>Email</th>
+                        <th style={{ ...styles.th, ...styles.thTdCommon }}>Paid Amount</th>
+                        <th style={{ ...styles.th, ...styles.thTdCommon }}>Time</th>
+                        <th style={{ ...styles.th, ...styles.thTdCommon }}>Turf Name</th>
+
                     </tr>
-                ))}
-                </tbody>
-            </table>
-            <style jsx>{`
-                .booking-container {
-                    margin: 20px;
-                    padding: 20px;
-                    min-height: calc(100vh - 100px);
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                }
+                    </thead>
+                    <tbody>
+                    {bookingDetails.map((detail, index) => (
+                        <tr key={index} style={index % 2 === 0 ? styles.trEven : {}}>
+                            <td style={{ ...styles.td, ...styles.thTdCommon }}>{detail.bookingId}</td>
+                            <td style={{ ...styles.td, ...styles.thTdCommon }}>{detail.date}</td>
+                            <td style={{ ...styles.td, ...styles.thTdCommon }}>{detail.email}</td>
+                            <td style={{ ...styles.td, ...styles.thTdCommon }}>{detail.payedAmt}</td>
+                            <td style={{ ...styles.td, ...styles.thTdCommon }}>{detail.time.join(', ')}</td>
+                            <td style={{ ...styles.td, ...styles.thTdCommon }}>{detail.turfname}</td>
 
-                .booking-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 20px;
-                    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                }
-
-                .booking-table th, .booking-table td {
-                    padding: 12px 15px;
-                    text-align: center;
-                    border: 1px solid #ddd;
-                }
-
-                .booking-table th {
-                    background-color: cornflowerblue;
-                    color: white;
-                    font-weight: bold;
-                }
-
-                .booking-table td {
-                    background-color: black;
-                    font-size: 14px;
-                }
-
-                .booking-table tr:nth-child(even) td {
-                    background-color: #f2f2f2;
-                }
-
-                .booking-table tr:hover {
-                    background-color: #f1f1f1;
-                }
-            `}</style>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };

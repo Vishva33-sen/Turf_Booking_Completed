@@ -17,11 +17,18 @@ const DashboardPage = () => {
     const [showPopup, setShowPopup] = useState(false);
     const myBookingsRef = useRef(null);
     const supportRef = useRef(null);
+    const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
+    const handleLogoutConfirmation = (confirm) => {
+        if (confirm) {
+            logoutUser(); // Call logout function if confirmed
+        }
+        setShowLogoutPopup(false); // Close the popup after confirmation
+    };
     const logoutUser = () => {
         localStorage.removeItem("email");
         console.log("User logged out successfully.");
-        navigate("/home");
+        navigate("/");
     };
 
     const showSection = (section) => {
@@ -220,14 +227,33 @@ const DashboardPage = () => {
                             </li>
                         ))}
                         <li
-                            style={{ ...styles.menuItem, color: '#ff5252', fontWeight: 'bold' }}
-                            onMouseEnter={(e) => (e.target.style.background = '#c62828')}
-                            onMouseLeave={(e) => (e.target.style.background = 'transparent')}
-                            onClick={logoutUser}
+                            style={{ ...styles.menuItem, color: "#ff5252", fontWeight: "bold" }}
+                            onMouseEnter={(e) => (e.target.style.background = "#c62828")}
+                            onMouseLeave={(e) => (e.target.style.background = "transparent")}
+                            onClick={() => setShowLogoutPopup(true)} // Show popup on click
                         >
                             Logout
                         </li>
+
+                        {showLogoutPopup && (
+                            <div style={styles.logoutPopup}>
+                                <p>Are you sure you want to log out?</p>
+                                <button
+                                    style={{ ...styles.popupButton, ...styles.yesButton }}
+                                    onClick={() => handleLogoutConfirmation(true)}
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    style={{ ...styles.popupButton, ...styles.noButton }}
+                                    onClick={() => handleLogoutConfirmation(false)}
+                                >
+                                    No
+                                </button>
+                            </div>
+                        )}
                     </ul>
+
                 </div>
 
                 {/* Main Dashboard */}
@@ -501,6 +527,35 @@ const styles = {
         border: 'none',
         borderRadius: '5px',
         cursor: 'pointer',
+    },
+    logoutPopup: {
+        position: "fixed",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        backgroundColor: "rgba(0,0,0,0.8)",
+        color: "#fff",
+        padding: "20px",
+        borderRadius: "5px",
+        zIndex: 1001,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+    },
+    popupButton: {
+        marginTop: "10px",
+        padding: "10px 20px",
+        color: "#fff",
+        border: "none",
+        cursor: "pointer",
+        borderRadius: "5px",
+        transition: "background 0.3s ease", // Smooth transition for background
+    },
+    yesButton: {
+        background: "linear-gradient(45deg, red, darkred)",
+    },
+    noButton: {
+        background: "linear-gradient(45deg, blue, darkblue)",
     },
 
     // Media Queries for Responsiveness

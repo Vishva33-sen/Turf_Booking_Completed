@@ -30,7 +30,7 @@ const AdminLogin = () => {
             }
 
             setTimeout(() => {
-                navigate("/home");
+                navigate("/");
             }, 1000);
         } catch (err) {
             setError("Invalid email or password.");

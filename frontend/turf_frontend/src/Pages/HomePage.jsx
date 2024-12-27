@@ -32,7 +32,7 @@ const HomePage = () => {
 
             {/* Landing Section */}
             <div className="landing">
-                <h1>Welcome to TurfBooking System!</h1>
+                <h1>Welcome to Sports Den!</h1>
                 <p>Your Ultimate Sports Destination</p>
                 <p>
                     Whether you're a casual player or a pro athlete, TurfBooking makes booking sports facilities simple,

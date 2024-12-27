@@ -219,7 +219,7 @@ const Navbar = () => {
 
     return (
         <div style={styles.navbar}>
-            <div style={styles.logo}>TurfBooking System</div>
+            <div style={styles.logo}>Sports Den</div>
             <ul style={styles.ul}>
                 <li style={styles.li}>
                     <a

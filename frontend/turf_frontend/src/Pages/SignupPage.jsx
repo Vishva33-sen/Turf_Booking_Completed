@@ -123,11 +123,38 @@ const SignupPage = () => {
     heading: {
       color: "black",
     },
+    successMessage: {
+      backgroundColor: "#d4edda",
+      color: "#155724",
+      border: "1px solid #c3e6cb",
+      borderRadius: "5px",
+      padding: "10px",
+      marginBottom: "15px",
+      fontSize: "14px",
+      display: "flex",
+      alignItems: "center",
+
+      position: "absolute",
+      top: "-50px",
+      left: "40%",
+      zIndex: 1,
+      marginTop: "150px",
+    },
+    successIcon: {
+      marginRight: "10px",
+      fontSize: "18px",
+      color: "#28a745",
+    },
   };
 
   return (
       <div style={styles.registerpage}>
-        {message && <p style={styles.message}>{message}</p>}
+        {message && (
+            <div style={styles.successMessage}>
+              <span style={styles.successIcon}>✔</span>
+              <span>{message}</span>
+            </div>
+        )}
         <form style={styles.form} onSubmit={handleSubmit}>
           <h2 style={styles.heading}>Signup</h2>
           <label htmlFor="email">Email:</label>

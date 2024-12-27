@@ -38,6 +38,9 @@ const AddTurfForm = () => {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             setMessage(response.data);
+            if (response.data === "Turf added successfully") {
+                setTimeout(() => setMessage(''), 800);
+            }
         } catch (error) {
             setMessage('Error: ' + error.response.data);
         }
@@ -123,13 +126,60 @@ const AddTurfForm = () => {
             color: '#d32f2f',
             marginTop: '20px',
         },
+        popup: {
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            backgroundColor: '#d4edda',
+            color: '#155724',
+            border: '1px solid #c3e6cb',
+            borderRadius: '10px',
+            padding: '20px',
+            zIndex: '1000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+            animation: 'fade-in-out 3s ease-in-out',
+        },
+        popupIcon: {
+            marginRight: '10px',
+            fontSize: '20px',
+            color: '#28a745',
+        },
+        overlay: {
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: '999',
+        },
+        '@keyframes fade-in-out': {
+            '0%': { opacity: 0 },
+            '10%': { opacity: 1 },
+            '90%': { opacity: 1 },
+            '100%': { opacity: 0 },
+        },
     };
 
     return (
         <div style={styles.page}>
             <div style={styles.formContainer}>
                 <h2 style={styles.heading}>Add Turf Details</h2>
+
                 <form onSubmit={handleFormSubmit} style={styles.form}>
+                    {message === "Turf added successfully" && (
+                        <>
+                            <div style={styles.overlay}></div>
+                            <div style={styles.popup}>
+                                <span style={styles.popupIcon}>✔</span>
+                                <span>{message}</span>
+                            </div>
+                        </>
+                    )}
                     <div>
                         <label style={styles.label}>Turf Name:</label>
                         <input
@@ -215,7 +265,7 @@ const AddTurfForm = () => {
                     {/*    Logout*/}
                     {/*</button>*/}
                 </form>
-                {message && <p style={styles.message}>{message}</p>}
+
             </div>
         </div>
     );

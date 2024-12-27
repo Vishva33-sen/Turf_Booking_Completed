@@ -209,7 +209,7 @@ const DashboardPage = () => {
                                 {item}
                             </li>
                         ))}
-                        {['My Bookings', 'Support'].map((item, index) => (
+                        {['My Bookings'].map((item, index) => (
                             <li
                                 key={index}
                                 style={styles.menuItem}

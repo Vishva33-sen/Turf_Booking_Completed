@@ -19,19 +19,21 @@ const EditTurf = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
+
     // Fetch turf details by ID when the component mounts
     useEffect(() => {
         axios
             .get(`http://localhost:8081/admin/getTurfById?turfid=${turfid}`)
-            .then((response) => {
-                setTurfDetails(response.data);
-                setLoading(false);
-            })
+    .then((response) => {
+            setTurfDetails(response.data);
+            setLoading(false);
+        })
             .catch((err) => {
                 setError('Failed to fetch turf details');
                 setLoading(false);
             });
     }, [turfid]);
+
 
     // Handle form input changes
     const handleChange = (e) => {
@@ -48,31 +50,35 @@ const EditTurf = () => {
 
         axios
             .put(`http://localhost:8081/admin/updateTurf?turfid=${turfid}`, turfDetails)
-            .then(() => {
-                setShowSuccessMessage(true);
+    .then(() => {
+            setShowSuccessMessage(true);
 
-                setTimeout(() => {
-                    navigate('/updateturf', { state: { message: 'Turf updated successfully' } });
-                }, 1000); // 1 second delay
-            })
+            setTimeout(() => {
+                navigate('/updateturf', { state: { message: 'Turf updated successfully' } });
+            }, 1000); // 1 second delay
+
+        })
             .catch(() => {
                 alert('Failed to update turf details');
             });
     };
 
+
     const editTurfStyle = {
         display: 'flex',
         flexDirection: 'column',
         fontFamily: 'Arial, sans-serif',
-        padding: '30px',
+        padding: '20px',
         backgroundColor: 'rgba(0, 0, 0, 0.7)',
         color: '#fff',
         borderRadius: '10px',
-        width: '100%',
+        width: '90%',
         maxWidth: '800px',
         margin: '40px auto',
         alignItems: 'center',
         boxShadow: '0 8px 15px rgba(0, 0, 0, 0.2)',
+        marginBottom: '60px', // Add space below the form
+        flexGrow: 1, // Allow the form to take available space before footer
     };
 
     const titleStyle = {
@@ -80,11 +86,12 @@ const EditTurf = () => {
         textAlign: 'center',
         marginBottom: '20px',
         padding: '12px',
-        width: '250px',
+        width: '100%',
+        maxWidth: '250px',
         backgroundColor: '#333',
         borderRadius: '5px',
         fontWeight: 'bold',
-        fontSize: '24px',
+        fontSize: '1.5rem',
     };
 
     const formStyle = {
@@ -96,7 +103,7 @@ const EditTurf = () => {
 
     const inputStyle = {
         padding: '12px',
-        fontSize: '18px',
+        fontSize: '16px',
         border: '1px solid #ddd',
         borderRadius: '6px',
         width: '95%',
@@ -123,53 +130,77 @@ const EditTurf = () => {
         boxShadow: '0 4px 10px rgba(0, 123, 255, 0.3)',
     };
 
-    const successMessageStyle = {
-        backgroundColor: '#4CAF50',
-        color: '#fff',
-        padding: '12px 20px',
-        borderRadius: '6px',
-        marginBottom: '20px',
-        textAlign: 'center',
-        fontSize: '16px',
-        animation: 'fadeOut 1s ease-in-out forwards',
-        width: '100%',
+
+    const thispage = {
+        backgroundImage: `url(${BG})`,
+    backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: '100vh',
+        paddingTop: '20px',
+        display: 'flex',
+        flexDirection: 'column', // Ensures form takes the full available height
+        justifyContent: 'flex-start', // Aligns content to the top
+};
+
+
+    const popupStyle = {
+        position: 'fixed',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: '#d4edda',
+        color: '#155724',
+        border: '1px solid #c3e6cb',
+        borderRadius: '10px',
+        padding: '20px',
+        zIndex: '1000',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+        animation: 'fade-in-out 3s ease-in-out',
+    };
+
+    const popupIconStyle = {
+        marginRight: '10px',
+        fontSize: '20px',
+        color: '#28a745',
     };
 
     const modalStyle = {
         position: 'fixed',
-        top: '0',
-        left: '0',
+        top: 0,
+        left: 0,
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: '9999',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        zIndex: '999',
     };
 
-    const modalContentStyle = {
-        backgroundColor: '#1e1e1e',
-        padding: '20px',
-        borderRadius: '8px',
-        textAlign: 'center',
-        maxWidth: '400px',
-        width: '80%',
-        color: '#fff',
-    };
+    const fadeInOut = `
+    @keyframes fade-in-out {
+        0% { opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+`;
 
-    const thispage = {
-        backgroundImage: `url(${BG})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        minHeight: '100vh',
-        paddingTop: '20px',
-    };
 
     return (
         <div style={thispage}>
             <div style={editTurfStyle}>
                 <h2 style={titleStyle}>Edit Turf Details</h2>
+
+                {showSuccessMessage && (
+                    <>
+                        <div style={modalStyle}></div>
+                        <div style={popupStyle}>
+                            <span style={popupIconStyle}>✔</span>
+                            <span>Turf updated successfully!</span>
+                        </div>
+                    </>
+                )}
 
                 {loading && <p>Loading turf details...</p>}
                 {error && <p>{error}</p>}
@@ -268,14 +299,18 @@ const EditTurf = () => {
                             <img
                                 src={`data:image/*;base64,${turfDetails.imageData}`}
                                 alt="Preview"
-                                style={{ maxWidth: '50%', height: 'auto', marginTop: '10px',marginLeft:'200px', }}
+                                style={{
+                                    maxWidth: '100%',
+                                    height: 'auto',
+                                    marginTop: '10px',
+                                    display: 'block',
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                }}
                             />
                         )}
-                        {showSuccessMessage && (
-                            <div style={successMessageStyle}>
-                                <p>Turf Updated Successfully!</p>
-                            </div>
-                        )}
+
+
                         <button
                             type="submit"
                             style={updateButtonStyle}

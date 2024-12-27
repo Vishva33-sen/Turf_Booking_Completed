@@ -5,6 +5,7 @@ import com.example.Trufbooking.entity.turfDto;
 import com.example.Trufbooking.entity.turfowner;
 import com.example.Trufbooking.repository.admintable_repo;
 import com.example.Trufbooking.repository.turfownerRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,9 @@ public class adminservice {
 
     @Autowired
     turfownerRepo turforepo;
+    @Autowired
+    private com.example.Trufbooking.repository.slotrepo slotrepo;
+
     public List<String> getDistinctLocations() {
         return adminrepo.findDistinctLocations();
     }
@@ -82,8 +86,10 @@ public class adminservice {
         }
     }
 
+    @Transactional
     public boolean deleteTurf(int turfid) {
         if (adminrepo.existsById(turfid)) {
+            slotrepo.deleteByTurfId(turfid);
             adminrepo.deleteById(turfid);
             return true;
         } else {

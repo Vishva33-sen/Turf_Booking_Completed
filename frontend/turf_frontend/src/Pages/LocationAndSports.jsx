@@ -60,7 +60,7 @@ const LocationAndSports = () => {
         backgroundPosition: "center",
         backgroundColor: "black",
         backgroundImage: `url(${BG})`,
-    };
+};
 
     const locSportPageStyle = {
         background: "rgba(0, 0, 0, 0.6)",
@@ -93,6 +93,7 @@ const LocationAndSports = () => {
         width: "100%",
         maxWidth: "300px",
 
+
     };
 
     const dropdownStyle = {
@@ -107,7 +108,12 @@ const LocationAndSports = () => {
         transition: "all 0.3s ease",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
         fontFamily: "bold",
+        maxHeight: "50px", // Keep this as it is
+        overflowY: "auto", // Enables scrolling when the list is longer than the select box
+        WebkitAppearance: "none", // Removes default dropdown icon in webkit browsers like Chrome
+        MozAppearance: "none", // Removes default dropdown icon in Firefox
     };
+
 
     const gridContainerStyle = {
         display: "grid",

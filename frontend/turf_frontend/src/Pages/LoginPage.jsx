@@ -78,8 +78,19 @@ const LoginPage = () => {
   return (
       <div className="loginpage">
         <div className="message-container">
-          {success && <div className="success">{success}</div>}
-          {error && <div className="error">{error}</div>}
+          {success && (
+              <div className="success">
+                <span className="success-icon">✔</span>
+                <span>{success}</span>
+              </div>
+          )}
+          {error && (
+              <div className="error">
+                <span className="errorIcon">✖</span>
+                <span>{error}</span>
+              </div>
+          )}
+
         </div>
         <form onSubmit={handleSubmit} className="form-container">
           <h2>Login</h2>

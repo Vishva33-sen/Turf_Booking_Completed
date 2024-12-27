@@ -112,9 +112,15 @@
 }
 
 .message-container .success {
-  background-color: #28a745;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
   padding: 10px;
-  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
 
 }
 
@@ -123,4 +129,16 @@
   padding: 10px;
   border-radius: 4px;
 
+}
+
+
+.message-container .success-icon {
+  margin-right: 10px;
+  font-size: 18px;
+  color: #28a745;
+}
+.message-container .errorIcon{
+  marginRight: 10px;
+  fontSize: 18px;
+  color: #dc3545;
 }

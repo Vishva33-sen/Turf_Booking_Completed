@@ -77,16 +77,16 @@ const WishlistPage = () => {
         margin: "auto",
     });
 
-    const imgContainerStyle = {
+    const imgContainerStyle = (image) => ({
         height: "180px",
         width: "100%",
         borderRadius: "8px",
         backgroundColor: "#ddd",
-        backgroundImage: "url('../assets/turf.jpg')",
+        backgroundImage: image ? `url(data:image/jpeg;base64,${image})` : "url('../assets/turf.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        marginBottom: "15px", // Increased margin for better separation
-    };
+        marginBottom: "10px",
+    });
 
     const titleStyle = {
         fontSize: "2.5rem",
@@ -124,7 +124,7 @@ const WishlistPage = () => {
                             onMouseEnter={() => setHoverIndex(index)} // Set hover index
                             onMouseLeave={() => setHoverIndex(-1)} // Reset hover index
                         >
-                            <div style={imgContainerStyle}></div>
+                            <div style={imgContainerStyle(turf.image)}></div>
                             <h2 style={{ color: "#00bcd4", fontSize: "1.8rem", marginBottom: "15px", textAlign: "center" }}>
                                 {turf.turfname}
                             </h2>

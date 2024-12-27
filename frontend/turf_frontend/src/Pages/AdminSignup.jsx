@@ -34,18 +34,18 @@ function AdminSignup() {
     const styles = {
         signupPage: {
             backgroundImage: `url(${BG})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '100vh',
-            padding: '20px',
-            boxSizing: 'border-box',
-            textAlign: 'center',
-        },
-        formContainer: {
-            backgroundColor: "rgba(30, 30, 47, 0.7)",
+    backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        padding: '20px',
+        boxSizing: 'border-box',
+        textAlign: 'center',
+},
+    formContainer: {
+        backgroundColor: "rgba(30, 30, 47, 0.7)",
             padding: '30px',
             borderRadius: '8px',
             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -56,15 +56,15 @@ function AdminSignup() {
             gap: '20px',
             alignItems: 'center',
             justifyContent: 'center',
-        },
-        formTitle: {
-            fontSize: '26px',
+    },
+    formTitle: {
+        fontSize: '26px',
             color: 'white',
             marginBottom: '20px',
             fontWeight: 'bold',
-        },
-        input: {
-            padding: '12px',
+    },
+    input: {
+        padding: '12px',
             margin: '10px 0',
             fontSize: '16px',
             border: '1px solid #ccc',
@@ -72,13 +72,13 @@ function AdminSignup() {
             outline: 'none',
             transition: 'border-color 0.3s ease',
             width: '100%',
-        },
-        inputFocus: {
-            borderColor: '#00796b',
-        },
-        button: {
-            padding: '12px',
-            backgroundColor: '#00796b',
+    },
+    inputFocus: {
+        borderColor: '#00796b',
+    },
+    button: {
+        padding: '12px',
+        backgroundColor: "#00bcd4",
             border: 'none',
             borderRadius: '5px',
             color: 'white',
@@ -86,12 +86,12 @@ function AdminSignup() {
             cursor: 'pointer',
             transition: 'background-color 0.3s ease',
             width: '100%',
-        },
-        buttonHover: {
-            backgroundColor: '#004d40',
-        },
-        successMessage: {
-            backgroundColor: '#d4edda',
+    },
+    buttonHover: {
+        backgroundColor: "#008c9e",
+    },
+    successMessage: {
+        backgroundColor: '#d4edda',
             color: '#155724',
             border: '1px solid #c3e6cb',
             borderRadius: '5px',
@@ -100,21 +100,21 @@ function AdminSignup() {
             display: 'flex',
             alignItems: 'center',
             fontSize: '16px',
-        },
-        successIcon: {
-            marginRight: '10px',
+    },
+    successIcon: {
+        marginRight: '10px',
             fontSize: '18px',
             color: '#28a745',
-        },
-        successText: {
-            fontWeight: 'bold',
-        },
-        error: {
-            color: 'red',
+    },
+    successText: {
+        fontWeight: 'bold',
+    },
+    error: {
+        color: 'red',
             fontSize: '14px',
             marginTop: '10px',
-        },
-    };
+    },
+};
 
     return (
         <div style={styles.signupPage}>

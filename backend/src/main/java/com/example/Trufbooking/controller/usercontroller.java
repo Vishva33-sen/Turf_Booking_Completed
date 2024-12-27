@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.sql.SQLException;
 import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -110,10 +111,44 @@ public class usercontroller {
         return userDetails;
     }
     @GetMapping("/wishlist/{email}")
-    public ResponseEntity<List<admintable>> getWishlistbyturfid(@PathVariable String email) {
+    public ResponseEntity<List<Map<String, Object>>> getWishlistbyturfid(@PathVariable String email) {
+        // Fetch wishlist details by email
         List<admintable> wishlistDetails = userser.getWishlistDetailsByEmail(email);
-        return ResponseEntity.ok(wishlistDetails);
+
+        List<Map<String, Object>> wishlistWithImages = new ArrayList<>();
+
+        for (admintable turf : wishlistDetails) {
+            Map<String, Object> turfMap = new HashMap<>();
+            turfMap.put("turfid", turf.getTurfid());
+            turfMap.put("turfname", turf.getTurfname());
+            turfMap.put("location", turf.getLocation());
+            turfMap.put("mobilenumber", turf.getMobilenumber());
+            turfMap.put("price", turf.getPrice());
+            turfMap.put("sports", turf.getSports());
+            turfMap.put("length", turf.getLength());
+            turfMap.put("breadth", turf.getBreadth());
+
+            try {
+                // Check if image exists and convert it to base64 string
+                if (turf.getImage() != null) {
+                    byte[] imageBytes = turf.getImage().getBytes(1, (int) turf.getImage().length());
+                    String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+                    turfMap.put("image", base64Image);
+                } else {
+                    turfMap.put("image", null); // If no image, set to null
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                turfMap.put("image", null); // Handle image as null in case of error
+            }
+
+            // Add the current turf map to the list
+            wishlistWithImages.add(turfMap);
+        }
+
+        return ResponseEntity.ok(wishlistWithImages);
     }
+
     @PutMapping("/update")
     public ResponseEntity<String> updateUserDetails(
             @RequestParam("email") String email,

@@ -41,7 +41,7 @@ const PaymentPage = () => {
     };
 
     const handleProceed = () => {
-        if (selectedPayment === 'Cash on Delivery' || selectedPayment === 'Pay through Wallet') {
+        if (selectedPayment === 'On-field Payment' || selectedPayment === 'Pay through Wallet') {
             setShowMessage(true);
             handlePayNow();  // Call handlePayNow once the slot is booked successfully
         } else if (selectedPayment === 'Credit/Debit Card' || selectedPayment === 'UPI') {
@@ -158,8 +158,8 @@ const PaymentPage = () => {
 
                     {/* Cash on Delivery Option with React Icon */}
                     <div
-                        style={selectedPayment === 'Cash on Delivery' ? { ...styles.paymentOption, ...styles.selected, ...styles.cod } : styles.paymentOption}
-                        onClick={() => handlePaymentOptionChange('Cash on Delivery')}
+                        style={selectedPayment === 'On-field Payment' ? { ...styles.paymentOption, ...styles.selected, ...styles.cod } : styles.paymentOption}
+                        onClick={() => handlePaymentOptionChange('On-field Payment')}
                     >
                         <FaMoneyBillWave style={styles.icon} />
                         <span style={styles.label}>On-Field Payment</span>
@@ -338,6 +338,7 @@ const styles = {
         borderRadius: '5px',
         fontSize: '16px', // Adjusted font size to maintain readability
         textAlign: 'center',
+
     },
 
 

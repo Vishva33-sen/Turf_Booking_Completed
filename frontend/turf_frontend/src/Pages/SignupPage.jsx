@@ -1,7 +1,7 @@
 import { useState } from "react";
 import api from "../utils/api"; // Adjust the import path as needed
 import { useNavigate } from "react-router-dom";
-import BG from '../assets/sports_11zon.jpg';
+import BG from '../../public/images/sports_11zon.jpg';
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({

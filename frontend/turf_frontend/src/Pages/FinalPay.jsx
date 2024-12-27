@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { FaMoneyBillWave, FaWallet } from 'react-icons/fa'; // Importing Cash on Delivery and Wallet icons
-import BG from "../assets/sports_11zon.jpg";
-import cardImage from "../assets/creditcard.jpg"; // Add the image for Credit/Debit Card
-import upiImage from "../assets/upi.png";
+import BG from "../../public/images/sports_11zon.jpg";
+import cardImage from "../../public/images/creditcard.jpg"; // Add the image for Credit/Debit Card
+import upiImage from "../../public/images/upi.png";
 import axios from "axios"; // Add the image for UPI
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 

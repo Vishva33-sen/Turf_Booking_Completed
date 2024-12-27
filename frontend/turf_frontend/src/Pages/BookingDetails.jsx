@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import BG from "../assets/sports_11zon.jpg";
+import BG from "../../public/images/sports_11zon.jpg";
 
 const BookingDetails = () => {
     const [bookingDetails, setBookingDetails] = useState([]);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import BG from '../assets/sports_11zon.jpg'; // Background image (adjust path if necessary)
+import BG from '../../public/images/sports_11zon.jpg'; // Background image (adjust path if necessary)
 
 const SetSlot = () => {
     const { turfid } = useParams();

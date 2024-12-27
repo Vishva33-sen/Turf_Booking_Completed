@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import BG from "../assets/sports_11zon.jpg"; // Background Image
+import BG from "../../public/images/sports_11zon.jpg"; // Background Image
 
 const EditTurf = () => {
     const { turfid } = useParams(); // Get the turf ID from the route

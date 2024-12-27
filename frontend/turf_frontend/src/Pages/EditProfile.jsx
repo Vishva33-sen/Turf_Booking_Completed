@@ -1,5 +1,5 @@
 import {useState} from "react";
-import BG from '../assets/sports_11zon.jpg';
+import BG from '../../public/images/sports_11zon.jpg';
 const EditProfilePage = () => {
     const [user, setUser] = useState({
         username: "",

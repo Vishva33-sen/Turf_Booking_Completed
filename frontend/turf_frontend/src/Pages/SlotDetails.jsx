@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import BG from '../assets/sports_11zon.jpg';
+import BG from '../../public/images/sports_11zon.jpg';
 
 function SlotSelection() {
     const { turfId } = useParams();

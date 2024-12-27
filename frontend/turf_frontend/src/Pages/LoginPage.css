@@ -5,7 +5,7 @@
   width: 100%;
   font-family: Arial, sans-serif;
   overflow: hidden;
-  background: url('../assets/sports_11zon.jpg');
+  background: url('../../public/images/sports_11zon.jpg');
   display: flex;
   justify-content: center;
   align-items: center;

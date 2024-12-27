@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
-import BG from '../assets/sports_11zon.jpg';
-import profile_image from '../assets/profile_photo.jpg';
+import BG from '../../public/images/sports_11zon.jpg';
+import profile_image from '../../public/images/profile_photo.jpg';
 import axios from "axios";
 
 const DashboardPage = () => {

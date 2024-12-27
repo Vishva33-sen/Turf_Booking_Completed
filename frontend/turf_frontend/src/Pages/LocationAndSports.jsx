@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import BG from '../assets/sports_11zon.jpg';
+import BG from '../../public/images/sports_11zon.jpg';
 
 const LocationAndSports = () => {
     const [locations, setLocations] = useState([]);

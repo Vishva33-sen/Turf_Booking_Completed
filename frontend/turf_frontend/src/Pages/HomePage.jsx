@@ -25,8 +25,8 @@ const HomePage = () => {
             {/* Video Background Section */}
             <div className="video-container">
                 <video autoPlay loop muted>
-                    <source src="/src/assets/videos/home_background.mp4" type="video/mp4"/>
-                    Your browser does not support the video tag.
+                    <source src="/images/home_background.mp4" type="video/mp4"/>
+
                 </video>
             </div>
 

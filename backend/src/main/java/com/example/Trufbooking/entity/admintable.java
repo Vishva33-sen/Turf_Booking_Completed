@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.sql.Blob;
 import java.util.List;
 
-@Data
+
 @Entity
 @DynamicUpdate
 @DynamicInsert
@@ -77,6 +77,83 @@ public class admintable implements Serializable {
         }
     }
 
+    public int getTurfid() {
+        return turfid;
+    }
 
+    public void setTurfid(int turfid) {
+        this.turfid = turfid;
+    }
 
+    public Blob getImage() {
+        return image;
+    }
+
+    public void setImage(Blob image) {
+        this.image = image;
+    }
+
+    public double getBreadth() {
+        return breadth;
+    }
+
+    public void setBreadth(double breadth) {
+        this.breadth = breadth;
+    }
+
+    public String getTurfname() {
+        return turfname;
+    }
+
+    public void setTurfname(String turfname) {
+        this.turfname = turfname;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public long getMobilenumber() {
+        return mobilenumber;
+    }
+
+    public void setMobilenumber(long mobilenumber) {
+        this.mobilenumber = mobilenumber;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getSports() {
+        return sports;
+    }
+
+    public void setSports(String sports) {
+        this.sports = sports;
+    }
+
+    public turfowner getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(turfowner admin) {
+        this.admin = admin;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
 }

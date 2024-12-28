@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.util.Date;
 import java.util.List;
 
-@Data
 @Entity
 @DynamicUpdate
 @DynamicInsert

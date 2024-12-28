@@ -42,8 +42,6 @@ public class userservice {
     public usertable registerUser(usertable user) {
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        log.info(String.valueOf(user.getMobile_number()));
-        log.info(String.valueOf(user.getUsername()));
 
 
         return userrepo.save(user);

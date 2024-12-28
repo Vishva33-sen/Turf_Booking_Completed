@@ -134,19 +134,7 @@ public class turfownerController {
         }
     }
 
-    @DeleteMapping("/deleteTurf")
-    public ResponseEntity<String> deleteTurf(@RequestParam int turfid) {
-        try {
-            boolean isDeleted = adminser.deleteTurf(turfid);
-            if (isDeleted) {
-                return ResponseEntity.ok("Turf deleted successfully");
-            } else {
-                return ResponseEntity.status(404).body("Turf not found");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Failed to delete turf");
-        }
-    }
+
 
     @PostMapping("/{turfid}")
     public String generateAndSaveSlots(@PathVariable int turfid) {
@@ -200,7 +188,19 @@ public class turfownerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-
+    @DeleteMapping("/deleteTurf")
+    public ResponseEntity<String> deleteTurf(@RequestParam int turfid) {
+        try {
+            boolean isDeleted = adminser.deleteTurf(turfid);
+            if (isDeleted) {
+                return ResponseEntity.ok("Turf deleted successfully");
+            } else {
+                return ResponseEntity.status(400).body("Turf cannot be deleted as it contains booked slots");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to delete turf");
+        }
+    }
 
 
 }

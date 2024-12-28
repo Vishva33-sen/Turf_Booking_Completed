@@ -1,6 +1,7 @@
 package com.example.Trufbooking.service;
 
 import com.example.Trufbooking.entity.admintable;
+import com.example.Trufbooking.entity.slot;
 import com.example.Trufbooking.entity.turfDto;
 import com.example.Trufbooking.entity.turfowner;
 import com.example.Trufbooking.repository.admintable_repo;
@@ -88,13 +89,26 @@ public class adminservice {
 
     @Transactional
     public boolean deleteTurf(int turfid) {
-        if (adminrepo.existsById(turfid)) {
-            slotrepo.deleteByTurfId(turfid);
-            adminrepo.deleteById(turfid);
-            return true;
-        } else {
-            return false;
+        if (!adminrepo.existsById(turfid)) {
+            throw new IllegalArgumentException("Turf not found");
         }
+
+        List<slot> slots = slotrepo.deleteByTurfId(turfid);
+        int flag = 0;
+        for (slot s : slots) {
+            String timeData = s.getTime();
+            if (timeData.contains("\"status\": \"booked\"")) {
+                flag = 1;
+                return false; // Prevent deletion if any slot is booked
+            }
+        }
+        if(flag == 0) {
+            if (adminrepo.existsById(turfid)) {
+                slotrepo.deletebyturfId(turfid);
+                adminrepo.deleteById(turfid);
+            }
+        }
+        return true;
     }
 
 }

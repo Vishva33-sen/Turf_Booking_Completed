@@ -52,7 +52,10 @@ public interface slotrepo extends JpaRepository<slot, Integer> {
     @Modifying
     @Transactional
     @Query("DELETE FROM slot s WHERE s.turf.turfid = :turfid")
-    void deleteByTurfId(@Param("turfid") int turfid);
+    void deletebyturfId(@Param("turfid") int turfid);
+
+    @Query("SELECT s FROM slot s WHERE s.turf.turfid = :turfid")
+    List<slot> deleteByTurfId(@Param("turfid") int turfid);
 
 
 }

@@ -48,11 +48,6 @@ const App = () => {
                           <ProtectedRoute>
                               <SlotDetails />
                           </ProtectedRoute>}/>
-                      {/*<Route*/}
-                      {/*    path="/confirmpayment" element={*/}
-                      {/*    <ProtectedRoute>*/}
-                      {/*        <ConfirmPayment />*/}
-                      {/*    </ProtectedRoute>}/>*/}
 
                       <Route
                           path="/dashboard"
@@ -70,14 +65,7 @@ const App = () => {
                               </ProtectedRoute>
                           }
                       />
-                      {/*<Route*/}
-                      {/*    path="/payment"*/}
-                      {/*    element={*/}
-                      {/*        <ProtectedRoute>*/}
-                      {/*            <PaymentPage />*/}
-                      {/*        </ProtectedRoute>*/}
-                      {/*    }*/}
-                      {/*/>*/}
+
                       <Route path="/editprofile" element={<ProtectedRoute><EditProfile/></ProtectedRoute>}/>
                       <Route path="/locationandsports" element={<ProtectedRoute><LocationAndSports/></ProtectedRoute>}></Route>
                       <Route path="/adminlogin" element={<AdminLogin/>}></Route>

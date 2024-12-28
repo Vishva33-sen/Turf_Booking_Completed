@@ -105,7 +105,7 @@ const HomePage = () => {
 
             {/* Testimonials Section */}
             <div ref={testimonialsRef} className={`testimonials ${testimonialsInView ? 'fade-in' : ''}`}>
-                <h2>What Our Users Say</h2>
+                <h2 className="userreview">What Our Users Say</h2>
                 <div className="testimonial-container">
                     <div className="testimonial-item">
                         <img src="/images/profile_photo.jpg" alt="Basketball"/>
@@ -138,7 +138,9 @@ const HomePage = () => {
         color: white; 
         overflow: hidden;
     }
-
+    .userreview{
+      margin-left:185px;
+    }
     .video-container {
         position: fixed;
         top: 0;

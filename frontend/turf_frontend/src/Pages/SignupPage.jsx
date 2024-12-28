@@ -72,6 +72,8 @@ const SignupPage = () => {
       backgroundSize: "cover",
     },
     form: {
+
+
       padding: "20px 30px",
       border: "1px solid #ddd",
       borderRadius: "8px",
@@ -121,7 +123,8 @@ const SignupPage = () => {
       backgroundColor: "#0056b3",
     },
     heading: {
-      color: "black",
+      color: "white",
+      marginLeft:"120px",
     },
     successMessage: {
       backgroundColor: "#d4edda",

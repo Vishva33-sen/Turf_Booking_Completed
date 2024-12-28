@@ -25,10 +25,11 @@ public class slotservice {
     @Autowired
     admintable_repo adminrepo;
 
-    @PostConstruct
-    public void init() {
-        updateDatesWithCurrentDate();
-    }
+//    @PostConstruct
+//    public void init() {
+//        System.out.println("SlotUpdater initialized!");
+//        updateDatesWithCurrentDate();
+//    }
     public List<slotdto> getAvailableSlots(Integer turfid) {
         List<Object[]> queryResults = slotrepo.findAvailableSlotsByTurfId(turfid);
         List<slotdto> availableSlots = new ArrayList<>();
@@ -50,38 +51,43 @@ public class slotservice {
     }
     @Transactional
     public void updateDatesWithCurrentDate() {
-        // Get today's, tomorrow's, and day after tomorrow's dates
+        // Get today's date and day after tomorrow's date
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        // Get current date, tomorrow's date, and the day after tomorrow's date
         Date today = new Date();
+
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
 
-        String currentDate = sdf.format(today);
-
-        cal.add(Calendar.DATE, 1);
-        String tomorrowDate = sdf.format(cal.getTime());
-
-        cal.add(Calendar.DATE, 1);
+        // Calculate the day after tomorrow
+        cal.add(Calendar.DATE, 2);
         String dayAfterTomorrow = sdf.format(cal.getTime());
 
-        // Update the JSON column with the new dates
-        updateSlotDates(currentDate, tomorrowDate, dayAfterTomorrow);
+        // Create the new JSON object for the day after tomorrow
+        String newSlotData = createSlotDataForDate(dayAfterTomorrow);
+
+        // Update the JSON column using the repository
+        slotrepo.updateSlotData(newSlotData);
     }
 
-    private void updateSlotDates(String today, String tomorrow, String dayAfterTomorrow) {
-        String updateQuery =
-                "UPDATE slot_detail " +
-                        "SET time = JSON_SET(time, " +
-                        "    '$[0].date', ? , " + // Update the first date
-                        "    '$[1].date', ? , " + // Update the second date
-                        "    '$[2].date', ? ) " + // Update the third date
-                        "WHERE JSON_CONTAINS(time, JSON_OBJECT('date', ?), '$')";
+    private String createSlotDataForDate(String date) {
+        // Create a new JSON structure for the day after tomorrow
+        StringBuilder slotsJson = new StringBuilder();
+        slotsJson.append("[");
+        for (int i = 0; i < 24; i++) {
+            String startTime = String.format("%02d:00", i);
+            String endTime = String.format("%02d:00", (i + 1) % 24);
+            slotsJson.append(String.format(
+                    "{\"time\": \"%s-%s\", \"status\": \"available\"}",
+                    startTime, endTime
+            ));
+            if (i < 23) slotsJson.append(", ");
+        }
+        slotsJson.append("]");
 
-        // Execute update query with the new dates
-        slotrepo.executeCustomUpdate(today, tomorrow, dayAfterTomorrow);
+        // Return the final JSON for the new date
+        return String.format("{\"date\": \"%s\", \"slots\": %s}", date, slotsJson.toString());
     }
+
     @Scheduled(cron = "0 0 0 * * ?")  // This will run at midnight every day
     public void updateTodaysDateAutomatically() {
         updateDatesWithCurrentDate();

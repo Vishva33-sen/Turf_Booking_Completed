@@ -40,14 +40,10 @@ public interface slotrepo extends JpaRepository<slot, Integer> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE slot_detail t " +
-            "SET t.time = JSON_SET(t.time, " +
-            "   '$[0].date', :today , " +
-            "   '$[1].date', :tomorrow , " +
-            "   '$[2].date', :dayAfterTomorrow ) " +
-            "WHERE JSON_CONTAINS(t.time, JSON_OBJECT('date', :today), '$')", nativeQuery = true)
-    void executeCustomUpdate(@Param("today") String today,
-                             @Param("tomorrow") String tomorrow,
-                             @Param("dayAfterTomorrow") String dayAfterTomorrow);
+            "SET t.time = JSON_ARRAY_APPEND(JSON_REMOVE(t.time, '$[0]'), '$', CAST(:newSlotData AS JSON))",
+            nativeQuery = true)
+    void updateSlotData(@Param("newSlotData") String newSlotData);
+
 
 
     @Query("SELECT s FROM slot s WHERE s.turf.turfid = :turfid")

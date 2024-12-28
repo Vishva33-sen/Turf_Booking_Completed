@@ -18,6 +18,10 @@ const DashboardPage = () => {
     const myBookingsRef = useRef(null);
     const supportRef = useRef(null);
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [onConfirm, setOnConfirm] = useState(() => () => {}); // Function to execute on confirm
+    const [bookingId, setBookingId] = useState(null);
 
     const handleLogoutConfirmation = (confirm) => {
         if (confirm) {
@@ -57,40 +61,47 @@ const DashboardPage = () => {
             console.error('Error fetching bookings:', error);
         }
     };
+    const showConfirmModal = (message, onConfirmCallback) => {
+        setModalMessage(message);
+        setOnConfirm(() => onConfirmCallback);
+        setShowModal(true);
+    };
+
+    const closeConfirmModal = () => {
+        setShowModal(false);
+    };
+
     const handleCancelBooking = async (turfid, date, time, booking_id) => {
-        const confirmCancel = window.confirm(
-            `Are you sure you want to cancel the booking on ${date} at ${time.join(", ")}?`
-        );
-
-        if (!confirmCancel) {
-            return; // If user selects "Cancel", exit the function
-        }
-
-        try {
-            const response = await axios.put(
-                `http://localhost:8081/admin/cancel/${turfid}`,
-                { date, time } // Pass time as an array in the body
-            );
-
-            if (response.data.success) {
-                alert(response.data.message); // Show success message
-                const deleteResponse = await axios.delete(
-                    `http://localhost:8081/bookings/${booking_id}`
+        // Show the confirmation modal with a custom message
+        const message = `Are you sure you want to cancel the booking on ${date} at ${time.join(", ")}?`;
+        showConfirmModal(message, async () => {
+            try {
+                // First, cancel the booking on the turf
+                const response = await axios.put(
+                    `http://localhost:8081/admin/cancel/${turfid}`,
+                    { date, time } // Pass time as an array in the body
                 );
 
-                if (deleteResponse.data.success) {
-                    alert(deleteResponse.data.message); // Show success message for deletion
-                    window.location.reload(); // Reload the page
+                if (response.data.success) {
+                    // Then, delete the booking
+                    const deleteResponse = await axios.delete(
+                        `http://localhost:8081/bookings/${booking_id}`
+                    );
+
+                    if (deleteResponse.data.success) {
+
+
+                    } else {
+                        navigate("/locationandsports");
+                    }
                 } else {
-                    alert(deleteResponse.data.message); // Show error message for deletion
+                    alert(response.data.message); // Error alert for cancellation
                 }
-            } else {
-                alert(response.data.message); // Show error message
+            } catch (error) {
+                console.error("Error cancelling booking:", error);
+                alert("Error while canceling booking. Please try again."); // Error alert for network issue
             }
-        } catch (error) {
-            console.error("Error cancelling booking:", error);
-            alert("Error while canceling booking. Please try again.");
-        }
+        });
     };
 
 
@@ -305,6 +316,33 @@ const DashboardPage = () => {
                                             >
                                                 Cancel Booking
                                             </button>
+                                            {showModal && (
+                                                <div className="modal" style={styles.modalStyles}>
+                                                    <div className="modal-content" style={styles.modalContentStyles}>
+                                                        <h4 style={styles.h4}>Confirm Action</h4>
+                                                        <p>{modalMessage}</p>
+                                                    </div>
+                                                    <div className="modal-footer" style={styles.modalFooterStyles}>
+                                                        <button
+                                                            onClick={closeConfirmModal}
+                                                            className="btn"
+                                                            style={styles.buttoncancelStyles}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                        <button
+                                                            onClick={() => {
+                                                                onConfirm(); // Execute the callback on confirm
+                                                                closeConfirmModal(); // Close the modal
+                                                            }}
+                                                            className="btn"
+                                                            style={styles.buttonconfirmStyles}
+                                                        >
+                                                            Confirm
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </li>
                                     ))}
                                 </ul>
@@ -364,6 +402,7 @@ const DashboardPage = () => {
                     </div>
                 </div>
             )}
+
         </div>
 
     );
@@ -556,6 +595,69 @@ const styles = {
     },
     noButton: {
         background: "linear-gradient(45deg, blue, darkblue)",
+    },
+    modalStyles : {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'fixed',
+        zIndex: 1,
+        left: 0,
+        top: 0,
+        width: '100%',
+        height: '100%',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        paddingTop: '60px',
+    },
+    modalContentStyles : {
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        margin: '5% auto',
+        padding: '30px 40px', // Increased padding for better spacing
+        border: '1px solid #888',
+        width: '40%', // Narrowed down the width for a more compact design
+        color: 'rgb(0,188,212)',
+        borderRadius: '12px', // Added rounded corners for a modern feel
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.6)', // Subtle shadow for depth
+        textAlign: 'center', // Centered text for uniformity
+        fontFamily: 'Arial, sans-serif', // Updated font family for a more professional look
+        fontSize: '16px', // Improved font size for readability
+        letterSpacing: '0.5px', // Slightly adjusted letter spacing for a polished effect
+    },
+    modalFooterStyles : {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '20px', // Added some space between content and buttons
+    },
+    buttoncancelStyles : {
+        background: "linear-gradient(45deg, blue, darkblue)",
+        color: 'white',
+        padding: '12px 24px', // Slightly larger padding for a more comfortable button
+        border: 'none',
+        cursor: 'pointer',
+        borderRadius: '8px',
+        marginRight: '15px', // Increased margin for better spacing
+        fontSize: '14px', // Increased font size for better readability
+        transition: 'all 0.3s ease', // Smooth transition for hover effect
+    },
+    buttonconfirmStyles : {
+        background: "linear-gradient(45deg, red, darkred)",
+        color: 'white',
+        padding: '12px 24px', // Slightly larger padding for consistency
+        border: 'none',
+        cursor: 'pointer',
+        borderRadius: '8px',
+        fontSize: '14px',
+        transition: 'all 0.3s ease', // Smooth transition for hover effect
+    },
+    h4 : {
+        marginLeft: '0', // Adjusted margin to ensure it's centered or aligned well with the modal
+        color: 'red',
+        fontSize: '24px', // Increased font size for emphasis
+        fontWeight: 'bold', // Bold for more emphasis
+        textAlign: 'center', // Centered for a cleaner look
+        marginBottom: '20px', // Added margin at the bottom to separate from the content
     },
 
     // Media Queries for Responsiveness

@@ -66,7 +66,7 @@ const AdminLogin = () => {
     },
     formTitle: {
         fontSize: "2rem",
-            color: "#00bcd4",
+            color: "white",
             textAlign: "center",
             marginBottom: "20px",
             fontWeight: "bold",

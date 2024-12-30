@@ -11,7 +11,7 @@ function SlotSelection() {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8081/home/${turfId}`)
+            .get(`http://13.203.161.41:8081/home/${turfId}`)
             .then((response) => {
                 const { turfDetails, availableSlots } = response.data;
                 console.log("Turf Details:", turfDetails);

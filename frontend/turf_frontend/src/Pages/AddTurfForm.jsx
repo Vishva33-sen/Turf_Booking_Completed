@@ -34,7 +34,7 @@ const AddTurfForm = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:8081/admin/addturf', formData, {
+            const response = await axios.post('http://13.203.161.41:8081/admin/addturf', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             setMessage(response.data);

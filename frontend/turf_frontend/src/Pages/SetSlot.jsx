@@ -16,7 +16,7 @@ const SetSlot = () => {
     const fetchSlots = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`http://localhost:8081/admin/${turfid}`);
+            const response = await axios.get(`http://13.60.24.43:8081/admin/${turfid}`);
 
             // Check if the response contains the "No slots found" message
             if (response.data === "No slots found for the given turf!") {
@@ -39,7 +39,7 @@ const SetSlot = () => {
         setLoading(true);
         try {
 
-            const response = await axios.post(`http://localhost:8081/admin/${turfid}`);
+            const response = await axios.post(`http://13.60.24.43:8081/admin/${turfid}`);
             setMessage(response.data);
             setLoading(false);
             fetchSlots();
@@ -73,7 +73,7 @@ const SetSlot = () => {
         setSlots(updatedSlots);
 
         try {
-            const response = await axios.put(`http://localhost:8081/admin/${turfid}?date=${selectedSlot.date}&time=${selectedSlot.time}`);
+            const response = await axios.put(`http://13.203.161.41:8081/admin/${turfid}?date=${selectedSlot.date}&time=${selectedSlot.time}`);
             setMessage(response.data);
         } catch (error) {
             console.error("Error updating slot status:", error);

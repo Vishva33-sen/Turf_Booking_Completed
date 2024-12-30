@@ -23,11 +23,11 @@ const SignupPage = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("/home/signup", formData);
+      const response = await api.post("http://13.203.161.41:8081/home/signup", formData);
 
       if (response.status === 201) {
         setMessage("Signup successful! Redirecting to login...");
-        setMessageType("success"); // Set message type to success
+        setMessageType("success");
         setFormData({
           email: "",
           username: "",

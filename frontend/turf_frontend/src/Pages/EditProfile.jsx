@@ -31,7 +31,7 @@ const EditProfilePage = () => {
         try {
             // Update UserTable (username and phoneNumber)
             const userUpdateResponse = await fetch(
-                `http://localhost:8081/home/update?email=${email}&username=${username}&mobileNumber=${phoneNumber}`,
+                `http://13.203.161.41:8081/home/update?email=${email}&username=${username}&mobileNumber=${phoneNumber}`,
                 { method: "PUT" }
             );
 
@@ -46,7 +46,7 @@ const EditProfilePage = () => {
                 const fileInput = document.querySelector('input[type="file"]');
                 formData.append("image", fileInput.files[0]);
 
-                const imageUploadResponse = await fetch("http://localhost:8081/home/uploadImage", {
+                const imageUploadResponse = await fetch("http://13.203.161.41:8081/home/uploadImage", {
                     method: "POST",
                     body: formData,
                 });

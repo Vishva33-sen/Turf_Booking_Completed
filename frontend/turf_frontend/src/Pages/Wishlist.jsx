@@ -16,7 +16,7 @@ const WishlistPage = () => {
                     return;
                 }
 
-                const response = await fetch(`http://localhost:8081/home/wishlist/${email}`);
+                const response = await fetch(`http://13.203.161.41:8081/home/wishlist/${email}`);
                 if (!response.ok) {
                     console.error("Failed to fetch wishlist data:", response.statusText);
                     setLoading(false);

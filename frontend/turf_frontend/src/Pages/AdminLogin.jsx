@@ -7,47 +7,57 @@ const AdminLogin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
-        setSuccessMessage("");
+        setSuccess("");
 
         try {
-            const response = await axios.post("http://localhost:8081/admin/login", {
+            const response = await axios.post("http://13.203.161.41:8081/admin/login", {
                 email,
                 password,
             });
-            setSuccessMessage(response.data.message);
 
-            if (response.data.adminId) {
-                localStorage.setItem("adminId", response.data.adminId);
-                localStorage.setItem("email", email);
-                localStorage.setItem("role", "admin");
-                console.log("adminId : ", response.data.adminId);
+            if (response.status === 200) {
+                setSuccess(response.data.message);
+                setError("");
+
+                if (response.data.adminId) {
+                    localStorage.setItem("adminId", response.data.adminId);
+                    localStorage.setItem("email", email);
+                    localStorage.setItem("role", "admin");
+                    console.log("adminId : ", response.data.adminId);
+                }
+
+                setTimeout(() => {
+                    navigate("/");
+                }, 1500);
+            } else {
+                setError("Unexpected response from the server.");
+                setSuccess("");
             }
-
-            setTimeout(() => {
-                navigate("/");
-            }, 1000);
         } catch (err) {
-            setError("Invalid email or password.");
+            if (err.response && err.response.status === 401) {
+                setError("Invalid email or password.");
+            } else {
+                setError(err.response?.data || "An error occurred.");
+            }
+            setSuccess("");
         }
     };
 
     const styles = {
-        loginpage: {
+        loginPage: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: "100vh",
+            padding: "20px",
             backgroundImage: `url(${BG})`,
-    display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        padding: "20px",
-        backgroundColor: "black",
-        boxSizing: "border-box",
-        backgroundSize: "cover",
+    backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
@@ -92,15 +102,18 @@ const AdminLogin = () => {
             fontSize: "16px",
             cursor: "pointer",
             width: "100%",
+            marginTop:"10px",
             transition: "background-color 0.3s ease",
     },
     buttonHover: {
         backgroundColor: "#008c9e",
     },
-    error: {
-        fontSize: "14px",
-            color: "red",
+    messageContainer: {
+        position: "absolute",
+            top: "-40px",
+            left: 0,
             textAlign: "center",
+            width: "300px",
     },
     successMessage: {
         backgroundColor: "#d4edda",
@@ -113,23 +126,38 @@ const AdminLogin = () => {
             display: "flex",
             alignItems: "center",
     },
-    successIcon: {
+    errorMessage: {
+        backgroundColor: "#edd4d4",
+            color: "#dc3545",
+            border: "1px solid #981420",
+            borderRadius: "5px",
+            padding: "10px",
+            marginBottom: "15px",
+            fontSize: "14px",
+            display: "flex",
+            alignItems: "center",
+    },
+    messageIcon: {
         marginRight: "10px",
             fontSize: "18px",
-            color: "#28a745",
+    },  formHeader: {
+        fontSize: "1rem",
+            color: "white",
+            textAlign: "left",
+            width: "100%",
+            marginBottom: "-9px", // Reduced margin
+            fontWeight: "bold",
     },
+
 };
 
     return (
-        <div style={styles.loginpage}>
+        <div style={styles.loginPage}>
+
             <form onSubmit={handleLogin} style={styles.formContainer}>
                 <h2 style={styles.formTitle}>Admin Login</h2>
-                {successMessage && (
-                    <div style={styles.successMessage}>
-                        <span style={styles.successIcon}>✔</span>
-                        <span>{successMessage}</span>
-                    </div>
-                )}
+
+                <label htmlFor="email" style={styles.formHeader}>Email</label>
                 <input
                     type="email"
                     placeholder="Email"
@@ -140,6 +168,8 @@ const AdminLogin = () => {
                     onFocus={(e) => (e.target.style.borderColor = styles.inputFocus.borderColor)}
                     onBlur={(e) => (e.target.style.borderColor = "#ccc")}
                 />
+
+                <label htmlFor="password" style={styles.formHeader}>Password</label>
                 <input
                     type="password"
                     placeholder="Password"
@@ -150,7 +180,6 @@ const AdminLogin = () => {
                     onFocus={(e) => (e.target.style.borderColor = styles.inputFocus.borderColor)}
                     onBlur={(e) => (e.target.style.borderColor = "#ccc")}
                 />
-                {error && <p style={styles.error}>{error}</p>}
                 <button
                     type="submit"
                     style={styles.button}
@@ -158,7 +187,20 @@ const AdminLogin = () => {
                     onMouseLeave={(e) => (e.target.style.backgroundColor = styles.button.backgroundColor)}
                 >
                     Login
+
                 </button>
+                {success && (
+                    <div style={styles.successMessage}>
+                        <span style={styles.messageIcon}>✔</span>
+                        <span>{success}</span>
+                    </div>
+                )}
+                {error && (
+                    <div style={styles.errorMessage}>
+                        <span style={styles.messageIcon}>✖</span>
+                        <span>{error}</span>
+                    </div>
+                )}
             </form>
         </div>
     );

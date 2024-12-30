@@ -49,7 +49,7 @@ const DashboardPage = () => {
                 console.error('User email not found in localStorage.');
                 return;
             }
-            const response = await fetch(`http://localhost:8081/bookings/${email}`);
+            const response = await fetch(`http://13.203.161.41:8081/bookings/${email}`);
             if (response.ok) {
                 const data = await response.json();
                 setBookings(data);
@@ -78,14 +78,14 @@ const DashboardPage = () => {
             try {
                 // First, cancel the booking on the turf
                 const response = await axios.put(
-                    `http://localhost:8081/admin/cancel/${turfid}`,
+                    `http://13.203.161.41:8081/admin/cancel/${turfid}`,
                     { date, time } // Pass time as an array in the body
                 );
 
                 if (response.data.success) {
                     // Then, delete the booking
                     const deleteResponse = await axios.delete(
-                        `http://localhost:8081/bookings/${booking_id}`
+                        `http://13.203.161.41:8081/bookings/${booking_id}`
                     );
 
                     if (deleteResponse.data.success) {
@@ -126,13 +126,13 @@ const DashboardPage = () => {
                 }
 
                 // Fetch user data
-                const response = await fetch(`http://localhost:8081/home/user/${email}`);
+                const response = await fetch(`http://13.203.161.41:8081/home/user/${email}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUser(data);
 
                     // Fetch user image
-                    const imageResponse = await fetch(`http://localhost:8081/home/user/image/${email}`);
+                    const imageResponse = await fetch(`http://13.203.161.41:8081/home/user/image/${email}`);
                     if (imageResponse.ok) {
                         const imageData = await imageResponse.json();
                         if (imageData.image) {

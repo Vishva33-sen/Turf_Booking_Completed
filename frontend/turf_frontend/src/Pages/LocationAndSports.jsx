@@ -12,12 +12,12 @@ const LocationAndSports = () => {
 
     useEffect(() => {
         // Fetch locations from backend
-        axios.get("http://localhost:8081/home/locations")
+        axios.get("http://13.203.161.41:8081/home/locations")
             .then((response) => setLocations(response.data))
             .catch((error) => console.error("Error fetching locations:", error));
 
         // Fetch sports from backend
-        axios.get("http://localhost:8081/home/sports")
+        axios.get("http://13.203.161.41:8081/home/sports")
             .then((response) => setSports(response.data))
             .catch((error) => console.error("Error fetching sports:", error));
     }, []);

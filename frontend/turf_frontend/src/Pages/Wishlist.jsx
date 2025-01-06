@@ -1,11 +1,29 @@
 import { useEffect, useState } from "react";
 import BG from '../../public/images/sports_11zon.jpg';
+import {useNavigate} from "react-router-dom";
+import axios from "axios";
 
 const WishlistPage = () => {
     const [wishlistTurfs, setWishlistTurfs] = useState([]);
     const [loading, setLoading] = useState(true);
     const [hoverIndex, setHoverIndex] = useState(-1); // Tracks hover state
+    const navigate = useNavigate();
+    const userEmail = localStorage.getItem("email");
+    const [wishlist, setWishlist] = useState([]);
+    const handleSelectSlot = (turfId) => {
+        navigate(`/${turfId}`);
+    };
 
+    useEffect(() => {
+        if (userEmail) {
+            axios
+                .get(`${import.meta.env.VITE_API_URL}/home/wishlist`, { params: { email: userEmail } })
+                .then((response) => {
+                    setWishlist(response.data); // Response should be an array of turf IDs
+                })
+                .catch((error) => console.error("Error fetching wishlist:", error));
+        }
+    }, [userEmail]);
     useEffect(() => {
         const fetchWishlist = async () => {
             try {
@@ -16,7 +34,7 @@ const WishlistPage = () => {
                     return;
                 }
 
-                const response = await fetch(`http://13.203.161.41:8081/home/wishlist/${email}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/home/wishlist/${email}`);
                 if (!response.ok) {
                     console.error("Failed to fetch wishlist data:", response.statusText);
                     setLoading(false);
@@ -35,6 +53,22 @@ const WishlistPage = () => {
         fetchWishlist();
     }, []);
 
+    const handleWishlistToggle = (turfId) => {
+        console.log("Toggling wishlist for Turf ID:", turfId);
+        axios
+            .post(`${import.meta.env.VITE_API_URL}/home/toggle`, null, {
+                params: { email: userEmail, turfId: turfId },
+            })
+            .then(() => {
+                // Update wishlist state
+                setWishlist((prevWishlist) =>
+                    prevWishlist.includes(turfId)
+                        ? prevWishlist.filter((id) => id !== turfId)
+                        : [...prevWishlist, turfId]
+                );
+            })
+            .catch((error) => console.error("Error toggling wishlist:", error));
+    };
     const containerStyle = {
         color: "white",
         backgroundImage: `url(${BG})`,
@@ -105,6 +139,31 @@ const WishlistPage = () => {
         marginBottom: "10px",
         textAlign: "center", // Centered text for a more polished look
     };
+    const buttonStyle = {
+        backgroundColor: "#00bcd4",
+        color: "white",
+        padding: "8px 12px",
+        border: "none",
+        borderRadius: "5px",
+        cursor: "pointer",
+        fontSize: "16px",
+        transition: "background-color 0.3s ease",
+        marginTop: "10px",
+        width: "100%",
+    };
+    const heartStyle = {
+        cursor: "pointer",
+        color: "#ccc",
+        fontSize: "30px",
+        transition: "color 0.3s ease",
+    };
+
+    const heartActiveStyle = {
+        color: "red",
+    };
+    const buttonHoverStyle = {
+        backgroundColor: "#008ba3",
+    };
 
     return (
         <div style={containerStyle}>
@@ -125,7 +184,12 @@ const WishlistPage = () => {
                             onMouseLeave={() => setHoverIndex(-1)} // Reset hover index
                         >
                             <div style={imgContainerStyle(turf.image)}></div>
-                            <h2 style={{ color: "#00bcd4", fontSize: "1.8rem", marginBottom: "15px", textAlign: "center" }}>
+                            <h2 style={{
+                                color: "#00bcd4",
+                                fontSize: "1.8rem",
+                                marginBottom: "15px",
+                                textAlign: "center"
+                            }}>
                                 {turf.turfname}
                             </h2>
                             <p style={textStyle}><strong>Location:</strong> {turf.location}</p>
@@ -135,6 +199,37 @@ const WishlistPage = () => {
                                 {turf.sports ? JSON.parse(turf.sports).join(", ") : "N/A"}
                             </p>
                             <p style={textStyle}><strong>Contact:</strong> {turf.mobilenumber}</p>
+                            <button
+                                style={buttonStyle}
+                                onMouseEnter={(e) =>
+                                    Object.assign(e.currentTarget.style, buttonHoverStyle)
+                                }
+                                onMouseLeave={(e) =>
+                                    Object.assign(e.currentTarget.style, buttonStyle)
+                                }
+
+                                onClick={() => {
+
+                                    handleSelectSlot(turf.turfid)
+                                }}
+                            >
+                                Select Slot
+                            </button>
+                            <div
+                                style={heartStyle}
+                                onClick={() => {
+                                    console.log("Heart Clicked for Turf ID:", turf.turfid);
+                                    handleWishlistToggle(turf.turfid);
+                                }}
+                            >
+                                    <span
+                                        style={wishlist.includes(turf.turfid)
+                                            ? heartActiveStyle
+                                            : {}}
+                                    >
+                                        &#9829;
+                                    </span>
+                            </div>
                         </div>
                     ))}
                 </div>

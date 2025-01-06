@@ -21,7 +21,7 @@ const AdminTurfs = () => {
         }
 
         axios
-            .get(`http://13.203.161.41:8081/admin/getTurfsByAdmin?adminId=${adminId}`)
+            .get(`${import.meta.env.VITE_API_URL}/admin/getTurfsByAdmin?adminId=${adminId}`)
             .then((response) => {
                 if (Array.isArray(response.data)) {
                     setTurfs(response.data);
@@ -47,7 +47,7 @@ const AdminTurfs = () => {
 
     const confirmDelete = () => {
         axios
-            .delete(`http://13.203.161.41:8081/admin/deleteTurf?turfid=${turfToDelete}`)
+            .delete(`${import.meta.env.VITE_API_URL}/admin/deleteTurf?turfid=${turfToDelete}`)
             .then(() => {
                 alert('Turf deleted successfully');
                 setTurfs(turfs.filter((turf) => turf.id !== turfToDelete));

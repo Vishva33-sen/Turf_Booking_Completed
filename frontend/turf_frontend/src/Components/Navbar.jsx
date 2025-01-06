@@ -15,7 +15,7 @@ const Navbar = () => {
 
     const email = localStorage.getItem("email");
     const role = localStorage.getItem("role"); // Get user role (admin or user)
-    const firstLetter = email ? email.charAt(0).toUpperCase() : "P";
+    const firstLetter = email ? email.charAt(0).toUpperCase() : "0";
 
     // Check if the user is logged in when the component mounts
     useEffect(() => {
@@ -76,15 +76,15 @@ const Navbar = () => {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "20px 20px",
+            padding: "20px",
             backgroundColor: "rgba(0,0,0,0.8)",
-            flexWrap: "wrap",
             color: "rgb(0,188,212)",
             height: "45px",
+
         },
         logo: {
-            fontSize: "25px",
-            fontWeight: "bold",
+            maxWidth:"180px",
+            maxHeight:"70px",
         },
         ul: {
             listStyle: "none",
@@ -219,7 +219,7 @@ const Navbar = () => {
 
     return (
         <div style={styles.navbar}>
-            <div style={styles.logo}>Sports Den</div>
+            <div className="check"><img style={styles.logo} src="/images/logo.jpg"/></div>
             <ul style={styles.ul}>
                 <li style={styles.li}>
                     <a

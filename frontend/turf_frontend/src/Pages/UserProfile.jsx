@@ -49,7 +49,7 @@ const DashboardPage = () => {
                 console.error('User email not found in localStorage.');
                 return;
             }
-            const response = await fetch(`http://13.203.161.41:8081/bookings/${email}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/bookings/${email}`);
             if (response.ok) {
                 const data = await response.json();
                 setBookings(data);
@@ -78,14 +78,14 @@ const DashboardPage = () => {
             try {
                 // First, cancel the booking on the turf
                 const response = await axios.put(
-                    `http://13.203.161.41:8081/admin/cancel/${turfid}`,
+                    `${import.meta.env.VITE_API_URL}/admin/cancel/${turfid}`,
                     { date, time } // Pass time as an array in the body
                 );
 
                 if (response.data.success) {
                     // Then, delete the booking
                     const deleteResponse = await axios.delete(
-                        `http://13.203.161.41:8081/bookings/${booking_id}`
+                        `${import.meta.env.VITE_API_URL}/bookings/${booking_id}`
                     );
 
                     if (deleteResponse.data.success) {
@@ -126,13 +126,13 @@ const DashboardPage = () => {
                 }
 
                 // Fetch user data
-                const response = await fetch(`http://13.203.161.41:8081/home/user/${email}`);
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/home/user/${email}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUser(data);
 
                     // Fetch user image
-                    const imageResponse = await fetch(`http://13.203.161.41:8081/home/user/image/${email}`);
+                    const imageResponse = await fetch(`${import.meta.env.VITE_API_URL}/home/user/image/${email}`);
                     if (imageResponse.ok) {
                         const imageData = await imageResponse.json();
                         if (imageData.image) {
@@ -239,8 +239,8 @@ const DashboardPage = () => {
                         ))}
                         <li
                             style={{ ...styles.menuItem, color: "#ff5252", fontWeight: "bold" }}
-                            onMouseEnter={(e) => (e.target.style.background = "#c62828")}
-                            onMouseLeave={(e) => (e.target.style.background = "transparent")}
+                            onMouseEnter={(e) => (e.target.style.background = "#c62828",e.target.style.color="white")}
+                            onMouseLeave={(e) => (e.target.style.background = "transparent",e.target.style.color="#ff5252")}
                             onClick={() => setShowLogoutPopup(true)} // Show popup on click
                         >
                             Logout
@@ -300,6 +300,7 @@ const DashboardPage = () => {
                                             <p><strong>Booking Date:</strong> {booking.date}</p>
                                             <p><strong>Time:</strong> {booking.time.join(' , ')}</p>
                                             <p><strong>Amount Paid:</strong> {booking.payed_amt}</p>
+                                            <p><strong>Turf Name:</strong>{booking.turfname}</p>
 
                                             {/* Cancel button */}
                                             <button

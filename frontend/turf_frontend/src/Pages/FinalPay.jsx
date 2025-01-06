@@ -103,21 +103,7 @@ const PaymentPage = () => {
         }
     };
 
-    // const handleProceed = () => {
-    //     if (selectedPayment === 'On-field Payment' || selectedPayment === 'Pay through Wallet') {
-    //         setShowMessage(true);
-    //         handlePayNow();  // Call handlePayNow once the slot is booked successfully
-    //     } else if (selectedPayment === 'Credit/Debit Card' || selectedPayment === 'UPI') {
-    //         if ((selectedPayment === 'Credit/Debit Card' && cardDetails.cardNumber && cardDetails.expiryDate && cardDetails.cvv) ||
-    //             (selectedPayment === 'UPI' && upiId)) {
-    //             setShowMessage(true);
-    //             handlePayNow();  // Call handlePayNow once the payment is completed successfully
-    //
-    //         } else {
-    //             alert('Please fill in all the required details.');
-    //         }
-    //     }
-    // };
+
 
     const handlePayNow = async () => {
         const storedTurfDetails = JSON.parse(localStorage.getItem("turfDetails"));
@@ -145,6 +131,7 @@ const PaymentPage = () => {
                     payed_amt: storedTurfDetails.price * times.length, // Calculate total amount for the date
                     date, // Use the grouped date
                     time: times, // All times for this date
+                    turfname:storedTurfDetails.turfname,
                 }));
 
                 console.log("bookingDetailsArray", bookingDetailsArray);
@@ -152,7 +139,7 @@ const PaymentPage = () => {
                 // Send each booking detail separately and update the slot status
                 for (const bookingDetails of bookingDetailsArray) {
                     // Step 1: Send booking details to backend
-                    const response = await fetch("http://13.203.161.41:8081/bookings/add", {
+                    const response = await fetch(`${import.meta.env.VITE_API_URL}/bookings/add`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -170,7 +157,7 @@ const PaymentPage = () => {
                         try {
                             // Call the PUT request to update slot status
                             const updateResponse = await axios.put(
-                                `http://13.203.161.41:8081/admin/${bookingDetails.turfid}?date=${bookingDetails.date}&time=${time}`
+                                `${import.meta.env.VITE_API_URL}/admin/${bookingDetails.turfid}?date=${bookingDetails.date}&time=${time}`
                         );
                             console.log("Slot status updated:", updateResponse.data);
                         } catch (error) {
@@ -179,8 +166,6 @@ const PaymentPage = () => {
                         }
                     }
                 }
-
-                alert("All bookings added and slots updated successfully!");
                 // Navigate to /locationandsports after success
                 navigate("/locationandsports");
             } catch (error) {
@@ -228,14 +213,7 @@ const PaymentPage = () => {
                         <span style={styles.label}>On-Field Payment</span>
                     </div>
 
-                    {/* Pay Through Wallet Option with React Icon */}
-                    <div
-                        style={selectedPayment === 'Pay through Wallet' ? { ...styles.paymentOption, ...styles.selected, ...styles.wallet } : styles.paymentOption}
-                        onClick={() => handlePaymentOptionChange('Pay through Wallet')}
-                    >
-                        <FaWallet style={styles.icon} />
-                        <span style={styles.label}>Pay through Wallet</span>
-                    </div>
+
                 </div>
 
                 {/* Display form for Credit/Debit Card or UPI if selected */}
@@ -350,7 +328,7 @@ pageDescription: {
 },
 paymentOptions: {
     display: 'grid',
-        gridTemplateColumns: 'repeat(2, 1fr)',
+        gridTemplateColumns: 'repeat(3, 1fr)',
         gap: '15px',
         marginBottom: '30px',
 },

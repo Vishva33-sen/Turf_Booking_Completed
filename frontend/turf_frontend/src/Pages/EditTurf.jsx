@@ -23,7 +23,7 @@ const EditTurf = () => {
     // Fetch turf details by ID when the component mounts
     useEffect(() => {
         axios
-            .get(`http://13.203.161.41:8081/admin/getTurfById?turfid=${turfid}`)
+            .get(`${import.meta.env.VITE_API_URL}/admin/getTurfById?turfid=${turfid}`)
     .then((response) => {
             setTurfDetails(response.data);
             setLoading(false);
@@ -49,7 +49,7 @@ const EditTurf = () => {
         e.preventDefault();
 
         axios
-            .put(`http://13.203.161.41:8081/admin/updateTurf?turfid=${turfid}`, turfDetails)
+            .put(`${import.meta.env.VITE_API_URL}/admin/updateTurf?turfid=${turfid}`, turfDetails)
     .then(() => {
             setShowSuccessMessage(true);
 

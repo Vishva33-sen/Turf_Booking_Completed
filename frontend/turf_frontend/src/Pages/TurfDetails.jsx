@@ -16,7 +16,7 @@ function TurfDetails() {
         const sport = searchParams.get("sport");
 
         axios
-            .get(`http://13.203.161.41:8081/home/turfs?location=${location}&sport=${sport}`)
+            .get(`${import.meta.env.VITE_API_URL}/home/turfs?location=${location}&sport=${sport}`)
             .then((response) => {
                 setTurfs(response.data);
 
@@ -37,7 +37,7 @@ function TurfDetails() {
     useEffect(() => {
         if (userEmail) {
             axios
-                .get(`http://13.203.161.41:8081/home/wishlist`, { params: { email: userEmail } })
+                .get(`${import.meta.env.VITE_API_URL}/home/wishlist`, { params: { email: userEmail } })
                 .then((response) => {
                     setWishlist(response.data); // Response should be an array of turf IDs
                 })
@@ -48,7 +48,7 @@ function TurfDetails() {
     const handleWishlistToggle = (turfId) => {
         console.log("Toggling wishlist for Turf ID:", turfId);
         axios
-            .post("http://13.203.161.41:8081/home/toggle", null, {
+            .post(`${import.meta.env.VITE_API_URL}/home/toggle`, null, {
                 params: { email: userEmail, turfId: turfId },
             })
             .then(() => {

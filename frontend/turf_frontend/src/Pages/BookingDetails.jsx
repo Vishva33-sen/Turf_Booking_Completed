@@ -12,7 +12,7 @@ const BookingDetails = () => {
 
         if (adminId) {
             // Sending adminId as a query parameter or in headers to the backend
-            axios.get(`http://13.203.161.41:8081/bookings/bookingdetails`, {
+            axios.get(`${import.meta.env.VITE_API_URL}/bookings/bookingdetails`, {
                 params: { adminId: adminId }  // Send adminId as a query parameter
             })
                 .then(response => {

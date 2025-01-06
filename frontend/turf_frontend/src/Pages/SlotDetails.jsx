@@ -11,7 +11,7 @@ function SlotSelection() {
 
     useEffect(() => {
         axios
-            .get(`http://13.203.161.41:8081/home/${turfId}`)
+            .get(`${import.meta.env.VITE_API_URL}/home/${turfId}`)
             .then((response) => {
                 const { turfDetails, availableSlots } = response.data;
                 console.log("Turf Details:", turfDetails);

@@ -15,7 +15,7 @@ function AdminSignup() {
 
         const adminData = { email, username, password };
 
-        const response = await fetch('http://13.203.161.41:8081/admin/signup', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/signup`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(adminData),

@@ -17,7 +17,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await api.post("http://13.203.161.41:8081/home/login", { email, password });
+      const response = await api.post(`${import.meta.env.VITE_API_URL}/home/login`, { email, password });
 
       if (response.status === 200) {
         login();

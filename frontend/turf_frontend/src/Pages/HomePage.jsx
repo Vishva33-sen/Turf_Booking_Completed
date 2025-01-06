@@ -16,9 +16,9 @@ const HomePage = () => {
     }, []);
 
     // Intersection observer hook for scroll animation
-    const { ref: aboutRef, inView: aboutInView } = useInView({ triggerOnce: true, threshold: 0.1 });
-    const { ref: featuresRef, inView: featuresInView } = useInView({ triggerOnce: true, threshold: 0.1 });
-    const { ref: testimonialsRef, inView: testimonialsInView } = useInView({ triggerOnce: true, threshold: 0.1 });
+    const { ref: aboutRef, inView: aboutInView } = useInView({ triggerOnce: false, threshold: 0.1 });
+    const { ref: featuresRef, inView: featuresInView } = useInView({ triggerOnce: false, threshold: 0.1 });
+    const { ref: testimonialsRef, inView: testimonialsInView } = useInView({ triggerOnce: false, threshold: 0.1 });
 
     return (
         <div className="home-container">

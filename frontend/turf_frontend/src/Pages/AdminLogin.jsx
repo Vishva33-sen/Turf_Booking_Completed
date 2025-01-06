@@ -16,7 +16,7 @@ const AdminLogin = () => {
         setSuccess("");
 
         try {
-            const response = await axios.post("http://13.203.161.41:8081/admin/login", {
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/admin/login`, {
                 email,
                 password,
             });

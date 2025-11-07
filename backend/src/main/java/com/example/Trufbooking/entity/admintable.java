@@ -35,8 +35,13 @@ public class admintable implements Serializable {
     @Column(name="price", nullable = false)
     private double price;
 
-    @Column(columnDefinition = "json")
-    private String sports;
+    @ElementCollection
+    @CollectionTable(
+            name = "turf_sports",
+            joinColumns = @JoinColumn(name = "turf_id")
+    )
+    @Column(name = "sport_name")
+    private List<String> sports;
 
     @ManyToOne
     @JoinColumn(name="admin_id",referencedColumnName = "admin_id",nullable = false)
@@ -133,11 +138,11 @@ public class admintable implements Serializable {
         this.price = price;
     }
 
-    public String getSports() {
+    public List<String> getSports() {
         return sports;
     }
 
-    public void setSports(String sports) {
+    public void setSports(List<String> sports) {
         this.sports = sports;
     }
 

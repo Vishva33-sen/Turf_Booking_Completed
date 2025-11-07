@@ -11,7 +11,7 @@ const EditTurf = () => {
         turfname: '',
         location: '',
         price: '',
-        sports: '',
+        sports: [],
         length: '',
         breadth: '',
         imageData: '',
@@ -19,7 +19,8 @@ const EditTurf = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
-
+    const [sportsInput, setSportsInput] = useState('');
+    const [sportsDelete,setSportsDelete] = useState('');
     // Fetch turf details by ID when the component mounts
     useEffect(() => {
         axios
@@ -35,13 +36,44 @@ const EditTurf = () => {
     }, [turfid]);
 
 
+    const handleAddSport = () =>{
+            console.log("M");
+            const sportList = [...turfDetails.sports];
+                    console.log(sportList);
+                    sportList.push(sportsInput);
+                    console.log(sportList);
+                    setTurfDetails((prevDetails)=>({
+                                    ...prevDetails,
+                                    sports: sportList,
+                                    }));
+
+
+            }
+    const handleDeleteSport =() =>{
+        console.log(sportsDelete);
+        const sportList = [...turfDetails.sports];
+        setTurfDetails((prevDetails)=>({
+            ...prevDetails,
+            sports: prevDetails.sports.filter(sport => sport.toUpperCase() !== sportsDelete.toUpperCase()),
+            }));
+        }
     // Handle form input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
+        if(name==="AddSports"){
+            setSportsInput(value);
+            // Here I need to add the new sport in the existing sports list and then i need to assign it background
+            //turfDetails.sports.add(sportsInput);
+            }
+        else if(name==="DeleteSport"){
+            setSportsDelete(value);
+            }
+        else{
         setTurfDetails((prevDetails) => ({
             ...prevDetails,
             [name]: value,
         }));
+    }
     };
 
     // Handle form submission
@@ -243,13 +275,43 @@ const EditTurf = () => {
                         <label>
                             Sports:
                             <input
-                                type="text"
+                                type="readOnly"
                                 name="sports"
-                                value={turfDetails.sports}
-                                onChange={handleChange}
+                                value={turfDetails.sports} //.join(", ")
+                                 onChange={handleChange}
+                                //placeholder="Enter sports separated by commas"
                                 required
                                 style={inputStyle}
                             />
+                        </label>
+                        <label>
+                            <div>
+                            AddSports:
+                            <input
+                                type = "text"
+                                name = "AddSports"
+                                value = {sportsInput}
+                                onChange={(e)=>{
+                                    handleChange(e);
+                                }}
+
+                                style={inputStyle}
+                            />
+                            <button onClick={handleAddSport}> Add Sport </button>
+                            </div>
+                        </label>
+                        <label>
+                            <div>
+                                Delete Sport:
+                                <input
+                                    type="text"
+                                     name="DeleteSport"
+                                     value={sportsDelete}
+                                     onChange={handleChange}
+                                        style={inputStyle}
+                                />
+                                <button onClick={handleDeleteSport}> Delete Sport </button>
+                            </div>
                         </label>
                         <label>
                             Length (m):
@@ -268,7 +330,7 @@ const EditTurf = () => {
                                 type="number"
                                 name="breadth"
                                 value={turfDetails.breadth}
-                                onChange={handleChange}
+                                onChange = {handleChange}
                                 required
                                 style={inputStyle}
                             />

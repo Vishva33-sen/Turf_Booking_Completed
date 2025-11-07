@@ -29,8 +29,8 @@ public class securityconfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+    //@Autowired
+    //private UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -61,7 +61,7 @@ public class securityconfig {
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(bCryptPasswordEncoder());
         return authProvider;
     }
@@ -81,5 +81,12 @@ public class securityconfig {
     @Bean
     public OidcUserService oidcUserService() {
         return new OidcUserService();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(){
+        return username-> org.springframework.security.core.userdetails.User
+                .withUsername(username)
+                .password("{noop}password").roles("USER").build();
     }
 }

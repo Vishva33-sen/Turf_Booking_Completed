@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const WishlistPage = () => {
-    const [wishlistTurfs, setWishlistTurfs] = useState([]);
+    const [wishlistTurfs, setWishlistTurfs] = useState({});
     const [loading, setLoading] = useState(true);
     const [hoverIndex, setHoverIndex] = useState(-1); // Tracks hover state
     const navigate = useNavigate();
@@ -40,9 +40,10 @@ const WishlistPage = () => {
                     setLoading(false);
                     return;
                 }
-
                 const turfsData = await response.json();
-                setWishlistTurfs(turfsData || []);
+                setWishlistTurfs(turfsData || {});
+                console.log("wishlistTurfs");
+                console.log(turfsData);
             } catch (error) {
                 console.error("Error fetching wishlist data:", error);
             } finally {
@@ -195,8 +196,8 @@ const WishlistPage = () => {
                             <p style={textStyle}><strong>Location:</strong> {turf.location}</p>
                             <p style={textStyle}><strong>Price:</strong> ₹{turf.price}</p>
                             <p style={textStyle}>
-                                <strong>Sports:</strong>{" "}
-                                {turf.sports ? JSON.parse(turf.sports).join(", ") : "N/A"}
+                                <strong>Sports:</strong>
+                                {turf.sports}
                             </p>
                             <p style={textStyle}><strong>Contact:</strong> {turf.mobilenumber}</p>
                             <button

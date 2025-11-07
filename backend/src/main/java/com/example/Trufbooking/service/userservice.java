@@ -74,15 +74,12 @@ public class userservice {
     }
 
     public String toggleWishlist(String email, Integer turfId) {
-
         UserInfo user = userInfoRepository.findByEmail(email);
-
-
         if (user == null) {
             return "User not found.";
         }
-
         List<Integer> wishlist = user.getWishlist();
+        System.out.println("Users WishList array"+wishlist);
         if (wishlist == null) {
             wishlist = new java.util.ArrayList<>();
         }
@@ -92,7 +89,7 @@ public class userservice {
         } else {
             wishlist.add(turfId);
         }
-
+        System.out.println("Updated wish list array: "+wishlist);
         user.setWishlist(wishlist);
         userInfoRepository.save(user);
 
@@ -107,16 +104,17 @@ public class userservice {
     }
     public List<admintable> getWishlistDetailsByEmail(String email) {
         UserInfo user = userInfoRepository.findByEmail(email);
-
         if (user == null || user.getWishlist() == null) {
             return new ArrayList<>();
         }
-
+        System.out.println("After Clicking Wishlist in dashboard"+user.getWishlist());
         List<admintable> turfs = new ArrayList<>();
 
         // Fetch turf details one by one based on wishlist (which contains turfid)
-        for (Integer turfid : user.getWishlist()) {
+        for (Integer turfid : user.getWishlist()) {//Integer turfid : user.getWishlist()
+
             Optional<admintable> turf = turfRepository.findById(turfid);
+            System.out.println(turf.get());
             turf.ifPresent(turfs::add);  // Add to the list if the turf exists
         }
         return turfs;

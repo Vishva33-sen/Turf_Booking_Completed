@@ -31,6 +31,10 @@ public class admincontroller {
         System.out.println(adminser.getDistinctSports());
         return adminser.getDistinctSports();
     }
+    @GetMapping("/sportsLocation")
+    public List<String> getSportsWithLocation(@RequestParam String location){
+        return adminser.getSportsInLocation(location);
+    }
     @GetMapping("/turfs")
     public List<Map<String, Object>> getTurfDetails(@RequestParam String location, @RequestParam String sport) {
         List<admintable> turfs = adminser.findTurfsByLocationAndSport(location, sport);

@@ -7,6 +7,9 @@ import com.example.Trufbooking.repository.turfownerRepo;
 import com.example.Trufbooking.service.adminservice;
 import com.example.Trufbooking.service.slotservice;
 import com.example.Trufbooking.service.turfownerService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +57,7 @@ public class turfownerController {
         boolean isValid = turfser.verifyAdmin(admin.getEmail(), admin.getPassword());
 
         if (isValid) {
-            turfowner existingAdmin = turfownrepo.findByEmail(admin.getEmail());
+            turfowner existingAdmin = turfownrepo.findByEmail(admin.getEmail());  //SQL Query select command will run
             int adminId = existingAdmin.getAdmin_id();
 
             Map<String, Object> response = new HashMap<>();
@@ -77,7 +80,7 @@ public class turfownerController {
                                           @RequestParam("location") String location,
                                           @RequestParam("mobilenumber") long mobilenumber,
                                           @RequestParam("price") double price,
-                                          @RequestParam("sports") String sports,
+                                          @RequestParam("sports") String sportsJSON,
                                           @RequestParam("length") double length,
                                           @RequestParam("breadth") double breadth,
                                           @RequestParam(value = "image", required = false) MultipartFile image) {
@@ -91,6 +94,16 @@ public class turfownerController {
         turfDetails.setLocation(location);
         turfDetails.setMobilenumber(mobilenumber);
         turfDetails.setPrice(price);
+        ObjectMapper mapper = new ObjectMapper();
+        List<String> sports = null;
+        System.out.println(sportsJSON);
+        try {
+            sports = mapper.readValue(sportsJSON, new TypeReference<List<String>>() {});
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        //turfDetails.setSports(sports);
+        System.out.println("Controller Side: "+sports);
         turfDetails.setSports(sports);
         turfDetails.setLength(length);
         turfDetails.setBreadth(breadth);
@@ -126,6 +139,7 @@ public class turfownerController {
     // Update turf details by ID
     @PutMapping("/updateTurf")
     public ResponseEntity<String> updateTurf(@RequestParam int turfid, @RequestBody admintable updatedTurf) {
+        System.out.println("turfid: "+ turfid );
         boolean isUpdated = adminser.updateTurf(turfid, updatedTurf);
         if (isUpdated) {
             return ResponseEntity.ok("Turf updated successfully.");

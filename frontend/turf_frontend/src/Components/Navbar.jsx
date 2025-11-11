@@ -12,7 +12,7 @@ const Navbar = () => {
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false); // Track if user is logged in
     const [isAdmin, setIsAdmin] = useState(false); // Track if user is admin
     const [showLogoutPopup, setShowLogoutPopup] = useState(false); // Track logout popup visibility
-
+    const [state,setState] = useState(false);
     const email = localStorage.getItem("email");
     const role = localStorage.getItem("role"); // Get user role (admin or user)
     const firstLetter = email ? email.charAt(0).toUpperCase() : "0";
@@ -39,7 +39,18 @@ const Navbar = () => {
     const signupUser = () => {
         setShowSignupDropdown(!showSignupDropdown); // Toggle signup dropdown
     };
+    const removeSubMenuLogin =() =>{
+        console.log(!showLoginDropdown);
+        if(!showLoginDropdown===false){
+            setShowLoginDropdown(!showLoginDropdown);
+            }
+        }
 
+    const removeSubMenuSign = () =>{
+        if(!showSignupDropdown===false){
+            setShowSignupDropdown(!showSignupDropdown);
+            }
+        }
     const logoutUser = () => {
         localStorage.removeItem("email"); // Clear email from localStorage
         localStorage.removeItem("role"); // Clear role from localStorage
@@ -218,7 +229,7 @@ const Navbar = () => {
     };
 
     return (
-        <div style={styles.navbar}>
+        <div style={styles.navbar} >
             <div className="check"><img style={styles.logo} src="/images/logo.jpg"/></div>
             <ul style={styles.ul}>
                 <li style={styles.li}>
@@ -231,7 +242,7 @@ const Navbar = () => {
                         Home
                     </a>
                 </li>
-                <li style={styles.li}>
+                <li style={styles.li} >
                     <a
                         href="#about"
                         style={styles.a(hovered === 1)}
@@ -298,16 +309,16 @@ const Navbar = () => {
 
                 {!isUserLoggedIn ? (
                     <>
-                        <li style={styles.li}>
+                        <li style={styles.li} onMouseEnter={removeSubMenuSign}>
                             <a
                                 onMouseEnter={loginUser}
                                 style={styles.a(hovered === 4)}
-                                // onMouseEnter={() => handleHover(4)}
+                                //onMouseEnter={() => handleHover(4)}
                                 onMouseLeave={handleLeave}
                             >
                                 Login
                             </a>
-                            <div style={styles.loginDropdown}>
+                            <div style={styles.loginDropdown} onMouseLeave={removeSubMenuLogin}>
                                 <a
                                     href="/login"
                                     style={styles.dropdownItem(hovered === 5)}
@@ -326,16 +337,16 @@ const Navbar = () => {
                                 </a>
                             </div>
                         </li>
-                        <li style={styles.li}>
+                        <li style={styles.li} onMouseEnter={removeSubMenuLogin}>
                             <a
                                 onMouseEnter={signupUser}
-                                style={styles.a(hovered === 5)}
-                                // onMouseEnter={() => handleHover(5)}
-                                onMouseLeave={handleLeave}
+                                style={styles.a(hovered ===9)}
+                                // onMouseEnter={() => handleHover(9)}
+                                onMouseLeave={() =>handleLeave}
                             >
                                 Signup
                             </a>
-                            <div style={styles.signupDropdown}>
+                            <div style={styles.signupDropdown}  onMouseLeave ={removeSubMenuSign}>
                                 <a
                                     href="/signup"
                                     style={styles.dropdownItem(hovered === 7)}

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import BG from '../../public/images/sports_11zon.jpg';
 
 const AddTurfForm = () => {
+
     const [turfname, setTurfname] = useState('');
     const [location, setLocation] = useState('');
     const [mobilenumber, setMobilenumber] = useState('');
@@ -19,14 +20,17 @@ const AddTurfForm = () => {
 
     const handleFormSubmit = async (event) => {
         event.preventDefault();
-
+        console.log(sports);
+        const sportsList = sports.split(",").map((s)=> s.trim()).filter((s)=> s!=="");
+        console.log(sportsList);
         const formData = new FormData();
         formData.append('admin_id', adminId);
         formData.append('turfname', turfname);
         formData.append('location', location);
         formData.append('mobilenumber', mobilenumber);
         formData.append('price', price);
-        formData.append('sports', sports);
+        formData.append('sports', JSON.stringify(sportsList));
+//         console.log(JSON.stringify(sportsList);
         formData.append('length', length);
         formData.append('breadth', breadth);
         if (image) {

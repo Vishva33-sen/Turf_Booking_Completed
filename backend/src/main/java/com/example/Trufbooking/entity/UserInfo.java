@@ -27,13 +27,17 @@ public class UserInfo {
     @Lob
     private byte[] image;
 
-    @Column(columnDefinition = "json")
-    @Convert(converter = JsonListConverter.class)
+    @ElementCollection
+    @CollectionTable(
+            name = "wish_list",
+            joinColumns = @JoinColumn(name = "email")
+    )
+    //@Convert(converter = JsonListConverter.class)
+    @Column(name = "wishlist")
     private List<Integer> wishlist;
 
     public UserInfo() {
-
-    }
+        }
 
     public String getEmail() {
         return email;

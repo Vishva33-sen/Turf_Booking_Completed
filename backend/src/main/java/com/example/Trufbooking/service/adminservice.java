@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,10 @@ public class adminservice {
     }
 
     public List<String> getDistinctSports() {
-        return adminrepo.findDistinctSports();
+        return adminrepo.findByDistinctSports();
+    }
+    public List<String> getSportsInLocation(String location){
+        return adminrepo.findBySportInLoc(location);
     }
 
     public List<admintable> findTurfsByLocationAndSport(String location, String sport) {
@@ -44,6 +48,11 @@ public class adminservice {
 
     public boolean addTurf(admintable turfDetails) {
         try {
+            System.out.println("serviceSide: "+turfDetails.getSports());
+            List<String> duplicateSports = new ArrayList<>();
+            duplicateSports.add("Cricket");
+            duplicateSports.add("Football");
+            System.out.println("Duplicate: "+ duplicateSports);
             adminrepo.save(turfDetails);
             return true;
         } catch (Exception e) {
@@ -69,8 +78,9 @@ public class adminservice {
         Optional<admintable> existingTurfOpt = adminrepo.findById(turfid);
         if (existingTurfOpt.isPresent()) {
             admintable existingTurf = existingTurfOpt.get();
-
             // Update the fields
+            System.out.println(existingTurf.getSports());
+            System.out.println(updatedTurf.getSports());
             existingTurf.setTurfname(updatedTurf.getTurfname());
             existingTurf.setLocation(updatedTurf.getLocation());
             existingTurf.setPrice(updatedTurf.getPrice());

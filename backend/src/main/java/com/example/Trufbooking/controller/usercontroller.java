@@ -96,12 +96,15 @@ public class usercontroller {
             @RequestParam String email,
             @RequestParam Integer turfId
     ) {
+        System.out.println("Email from frontend:  "+email);
+        System.out.println("Turf id from frontend: "+ turfId);
         String result = userser.toggleWishlist(email, turfId);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/wishlist")
     public List<Integer> getWishlist(@RequestParam String email) {
+        System.out.println("Adding Wishlist");
         return userser.getWishlistByEmail(email);
     }
     @GetMapping("/user/{email}")
@@ -111,10 +114,11 @@ public class usercontroller {
         return userDetails;
     }
     @GetMapping("/wishlist/{email}")
-    public ResponseEntity<List<Map<String, Object>>> getWishlistbyturfid(@PathVariable String email) {
+    public ResponseEntity<List<Map<String, Object>>> getWishlistbyturfid(@PathVariable String email) { //
         // Fetch wishlist details by email
+        //List<admintable>
         List<admintable> wishlistDetails = userser.getWishlistDetailsByEmail(email);
-
+        System.out.println(wishlistDetails);
         List<Map<String, Object>> wishlistWithImages = new ArrayList<>();
 
         for (admintable turf : wishlistDetails) {

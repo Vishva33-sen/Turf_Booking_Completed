@@ -15,22 +15,32 @@ const LocationAndSports = () => {
         axios.get(`${import.meta.env.VITE_API_URL}/home/locations`)
             .then((response) => setLocations(response.data))
             .catch((error) => console.error("Error fetching locations:", error));
+            },[]);
 
-        // Fetch sports from backend
-        axios.get(`${import.meta.env.VITE_API_URL}/home/sports`)
-            .then((response) => setSports(response.data))
-            .catch((error) => console.error("Error fetching sports:", error));
-    }, []);
+//         // Fetch sports from backend
+//         axios.get(`${import.meta.env.VITE_API_URL}/home/sports`)
+//             .then((response) => setSports(response.data))
+//             .catch((error) => console.error("Error fetching sports:", error));
+//
+    useEffect(() => {
+        if(selectedLocation.trim()!==""){
+        axios.get(`${import.meta.env.VITE_API_URL}/home/sportsLocation?location=${selectedLocation}`)
+            .then((response) =>setSports(response.data))
+            .catch((error) => console.error("Error fetching Sport"));
+        }
+    }, [selectedLocation]);
 
     const handleSportClick = (location, sport) => {
         console.log(location);
         console.log(sport);
         if (location && sport) {
+            // I need to show the image of the sport according to the location
             navigate(`/turfs?location=${location}&sport=${sport}`);
         } else {
             alert("Please select a location first!");
         }
     };
+
 
     // Function to get the image path based on the sport name
     const getSportImage = (sport) => {
@@ -46,6 +56,21 @@ const LocationAndSports = () => {
         // Default image if the sport is not found in the map
         return `/images/${sportImageMap[sport] || "default.jpg"}`;
     };
+
+//     const getSportImageLocation = (location) =>{
+//         const sportImageMap = {
+//                 Tennis: "tennis.jpeg",
+//                 Football: "football.jpg",
+//                 Volleyball: "volleyball.jpg",
+//                 Badminton: "badminton.jpg",
+//                 Cricket: "cricket.jpg",
+//                 Basketball: "basketball.jpeg",
+//             };
+//
+//             // Default image if the sport is not found in the map
+//             return `/images/${sportImageMap[sport] || "default.jpg"}`;
+//         };
+//     }
 
     // Inline styling objects
     const bodyStyle = {
@@ -148,18 +173,25 @@ const LocationAndSports = () => {
             <div style={locSportPageStyle}>
                 <h2 style={titleStyle}>Select Location and Sport</h2>
                 <div style={dropdownContainerStyle}>
-                    <select
-                        style={dropdownStyle}
-                        value={selectedLocation}
-                        onChange={(e) => setSelectedLocation(e.target.value)}
+                     <select
+                         style={dropdownStyle}
+                         value={selectedLocation}
+                         onChange={(e) => setSelectedLocation(e.target.value)}
                     >
-                        <option value="">Select Location</option>
-                        {locations.map((location, index) => (
-                            <option key={index} value={location}>
-                                {location}
-                            </option>
-                        ))}
-                    </select>
+                         <option value="">Select Location</option>
+                         {locations.map((location, index) => (
+                             <option key={index} value={location}>
+                                 {location}
+                             </option>
+                         ))}
+                     </select>
+{/*                     Enter the location:<input list="locationList" type ="text" value={selectedLocation} onChange={(e)=>setSelectedLocation(e.target.value)}/> */}
+{/*                     <datalist id="locationList"> */}
+{/*                         { */}
+{/*                             locations.map((location,index) => (<option key={index} value={location}/>)) */}
+{/*                             } */}
+{/*                         </datalist> */}
+
                 </div>
 
                 <div style={gridContainerStyle}>

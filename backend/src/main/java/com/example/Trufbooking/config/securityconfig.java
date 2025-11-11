@@ -29,8 +29,8 @@ public class securityconfig {
         return new BCryptPasswordEncoder();
     }
 
-    // @Autowired
-    // private UserDetailsService userDetailsService;
+    //@Autowired
+    //private UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -84,12 +84,9 @@ public class securityconfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-    return username -> org.springframework.security.core.userdetails.User
-            .withUsername(username)
-            .password("{noop}password") // NoOpPasswordEncoder for demo
-            .roles("USER")
-            .build();
-}
-
+    public UserDetailsService userDetailsService(){
+        return username-> org.springframework.security.core.userdetails.User
+                .withUsername(username)
+                .password("{noop}password").roles("USER").build();
+    }
 }

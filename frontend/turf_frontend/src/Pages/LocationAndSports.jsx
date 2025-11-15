@@ -212,7 +212,7 @@ const LocationAndSports = () => {
                             </div>
                         ))
                     ) : (
-                        <p>No sports available...</p>
+                        <p></p>
                     )}
                 </div>
             </div>

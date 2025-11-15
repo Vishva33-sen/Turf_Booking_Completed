@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/bookings")
@@ -20,11 +21,14 @@ public class BookingController {
 
     @PostMapping("/add")
     public String addBooking(@RequestBody Booking booking) {
+        System.out.println("Here is where the slot we booked gets added in postmapping");
+        System.out.println(booking.getTurfName());
         bookingRepository.save(booking); // Save the booking object directly
         return "Booking added successfully!";
     }
     @GetMapping("/{email}")
     public List<Booking> getBookingsByEmail(@PathVariable String email) {
+        System.out.println("My guess: "+ bookingRepository.findByEmail(email).getFirst().getBooking_id());
         return bookingRepository.findByEmail(email);
     }
     @DeleteMapping("/{bookingId}")
@@ -52,9 +56,19 @@ public class BookingController {
     public List<Map<String, Object>> getBookingDetails(@RequestParam("adminId") int adminId) {
         return bookingService.getBookingDetails(adminId);
     }
+    @GetMapping("/getBookingsById")
+    public Map<String,Object> getBookings(@RequestParam("bookingId") int bookingId){
+        System.out.println("Frontend is calling this controller");
+        System.out.println("Booking Id is"+ bookingId);
+        return bookingService.getBooking(bookingId);
+    }
 
-
-
+    @PutMapping("/updateBookingById")
+    public void updateBookingTicket(@RequestBody Booking updatedTicket){
+        //System.out.println(removedTime.get(0));
+        System.out.println(updatedTicket.getTurfid());
+        bookingService.updateTicket(updatedTicket);
+    }
 
 
 

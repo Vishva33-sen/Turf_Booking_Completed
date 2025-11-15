@@ -16,16 +16,16 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="booking_id", nullable = false)
-    private int booking_id;
+    private int bookingId;
 
     @Column(name = "email", nullable = false)
     private String email;
 
-    public Booking(String email, int turfid,  double payed_amt, String date, List<String> time) {
+    public Booking(String email, int turfid, String turfName, double payedAmt, String date, List<String> time) {
         this.email = email;
         this.turfid = turfid;
-
-        this.payed_amt = payed_amt;
+        this.turfName = turfName;
+        this.payedAmt = payedAmt;
         this.date = date;
         this.time = time;
     }
@@ -57,14 +57,20 @@ public class Booking {
     }
 
     public double getPayed_amt() {
-        return payed_amt;
+        return payedAmt;
     }
 
-    public void setPayed_amt(double payed_amt) {
-        this.payed_amt = payed_amt;
+    public void setPayed_amt(double payedAmt) {
+        this.payedAmt = payedAmt;
     }
 
+    public String getTurfName() {
+        return turfName;
+    }
 
+    public void setTurfName(String turfName) {
+        this.turfName = turfName;
+    }
 
     public String getEmail() {
         return email;
@@ -75,18 +81,18 @@ public class Booking {
     }
 
     public int getBooking_id() {
-        return booking_id;
+        return bookingId;
     }
 
-    public void setBooking_id(int booking_id) {
-        this.booking_id = booking_id;
+    public void setBooking_id(int bookingId) {
+        this.bookingId = bookingId;
     }
 
     @Column(name="turfid", nullable = false)
     private int turfid;
 
     @Column(name="payed_amt", nullable = false)
-    private double payed_amt;
+    private double payedAmt;
 
     @Column(name = "date",nullable = false)
 
@@ -95,4 +101,7 @@ public class Booking {
     @Column(name = "time",columnDefinition = "json",nullable = false)
     @Convert(converter = JsonConverter.class)
     private List<String> time;
+
+    @Column(name = "turf_name",nullable = false)
+    private String turfName;
 }

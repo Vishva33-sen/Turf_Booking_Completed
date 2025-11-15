@@ -43,6 +43,7 @@ public class adminservice {
     }
 
     public admintable findTurfById(Integer turfId) {
+        System.out.println("Things going to frontend"+adminrepo.findById(turfId).get().getTurfname());
         return adminrepo.findById(turfId).orElse(null); // Or throw a custom exception if not found
     }
 

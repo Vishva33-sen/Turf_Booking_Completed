@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -133,6 +134,7 @@ public class slotservice {
 
     public String getSlotsForTurf(int turfid) {
         Optional<slot> slotDetailOptional = slotrepo.findByTurfId(turfid);
+        //System.out.println(slotrepo.findByTurfId(turfid).get());
         if (!slotDetailOptional.isPresent()) {
             return "No slots found for the given turf!";
         }
@@ -176,47 +178,66 @@ public class slotservice {
     }
 
     public boolean cancelSlot(int turfId, String date, List<String> times) {
-        Optional<slot> slotOpt = slotrepo.findByTurfId(turfId);
-        if (slotOpt.isPresent()) {
-            slot slot = slotOpt.get();
+        LocalDate currentDate = LocalDate.now();
+        LocalDate date1 = LocalDate.parse(date);
+        LocalTime currentTime = LocalTime.now();
+        String[] newTime = null;
+        LocalTime time2 = null;
+        List<LocalTime> Timings = new ArrayList<>();
+        if(currentDate.isAfter(date1)){
+            System.out.println(currentTime);
+            return false;
+        }
+        else if(currentDate.equals(date1) || currentDate.isBefore(date1)) {
+            Optional<slot> slotOpt = slotrepo.findByTurfId(turfId);
+            if (slotOpt.isPresent()) {
+                slot slot = slotOpt.get();
+                try {
+                    String timeJson = slot.getTime();
+                    List<Map<String, Object>> slotsData = objectMapper.readValue(timeJson, List.class);
 
-            try {
-                String timeJson = slot.getTime();
-                List<Map<String, Object>> slotsData = objectMapper.readValue(timeJson, List.class);
+                    boolean slotUpdated = false;
 
-                boolean slotUpdated = false;
+                    // Iterate through each dateSlot to find the matching date
+                    for (Map<String, Object> dateSlot : slotsData) {
+                        if (date.equals(dateSlot.get("date"))) {
+                            List<Map<String, String>> slotList = (List<Map<String, String>>) dateSlot.get("slots");
 
-                // Iterate through each dateSlot to find the matching date
-                for (Map<String, Object> dateSlot : slotsData) {
-                    if (date.equals(dateSlot.get("date"))) {
-                        List<Map<String, String>> slotList = (List<Map<String, String>>) dateSlot.get("slots");
+                            // Iterate through the time slots to cancel
+                            for (String time : times) {
+                                for (Map<String, String> slotDetails : slotList) {
+                                    if (time.equals(slotDetails.get("time")) && "booked".equals(slotDetails.get("status"))) {
+                                        newTime = slotDetails.get("time").split("-");
+                                        time2 = LocalTime.parse(newTime[0]);
+                                        Timings.add(time2);
+                                        if(currentTime.isAfter(time2) && currentDate.equals(date1)){
+                                            return false;
+                                        }
+                                        slotDetails.put("status", "available");
+                                        slotUpdated = true;
+                                    }
 
-                        // Iterate through the time slots to cancel
-                        for (String time : times) {
-                            for (Map<String, String> slotDetails : slotList) {
-                                if (time.equals(slotDetails.get("time")) && "booked".equals(slotDetails.get("status"))) {
-                                    slotDetails.put("status", "available");
-                                    slotUpdated = true;
                                 }
                             }
                         }
                     }
-                }
 
-                if (slotUpdated) {
-                    String updatedTimeJson = objectMapper.writeValueAsString(slotsData);
-                    slot.setTime(updatedTimeJson);
-                    slotrepo.save(slot);
-                    return true;
+                    if (slotUpdated) {
+                        System.out.println("Timings booked: "+ Timings);
+                        String updatedTimeJson = objectMapper.writeValueAsString(slotsData);
+                        slot.setTime(updatedTimeJson);
+                        slotrepo.save(slot);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("Error parsing or updating slot data.");
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("Error parsing or updating slot data.");
             }
         }
         return false; // Return false if no updates occurred
-    }
 
+}
 
 
 

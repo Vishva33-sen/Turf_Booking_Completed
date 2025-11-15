@@ -21,7 +21,7 @@ import EditTurf from "./Pages/EditTurf.jsx";
 import SetSlot from "./Pages/SetSlot.jsx";
 import BookingDetails from "./Pages/BookingDetails.jsx";
 import PaymentPage from "./Pages/FinalPay.jsx";
-
+import EditBooking from "./Pages/EditBooking.jsx";
 const App = () => {
   return (
 
@@ -66,6 +66,7 @@ const App = () => {
                           }
                       />
 
+
                       <Route path="/editprofile" element={<ProtectedRoute><EditProfile/></ProtectedRoute>}/>
                       <Route path="/locationandsports" element={<ProtectedRoute><LocationAndSports/></ProtectedRoute>}></Route>
                       <Route path="/adminlogin" element={<AdminLogin/>}></Route>
@@ -77,6 +78,7 @@ const App = () => {
                       <Route path="/bookingdetails" element={<BookingDetails/>} />
                       <Route path="/payment" element={<PaymentPage/>} />
                       <Route path="/confirmpayment" element={<ConfirmPayment/>} />
+                      <Route path="/edit-booking/:bookingId" element={<EditBooking />}></Route>
                   </Routes>
                   <Footer />
               </AuthProvider>

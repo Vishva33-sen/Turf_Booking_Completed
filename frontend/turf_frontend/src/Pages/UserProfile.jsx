@@ -20,7 +20,7 @@ const DashboardPage = () => {
     const [showLogoutPopup, setShowLogoutPopup] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
-    const [onConfirm, setOnConfirm] = useState(() => () => {}); // Function to execute on confirm
+    const [onConfirm, setOnConfirm] = useState(() => () => { }); // Function to execute on confirm
     const [bookingId, setBookingId] = useState(null);
 
     const handleLogoutConfirmation = (confirm) => {
@@ -44,6 +44,7 @@ const DashboardPage = () => {
 
     const fetchBookings = async () => {
         try {
+            console.log("Expected");
             const email = localStorage.getItem('email');
             if (!email) {
                 console.error('User email not found in localStorage.');
@@ -95,7 +96,7 @@ const DashboardPage = () => {
                         navigate("/locationandsports");
                     }
                 } else {
-                    alert(response.data.message); // Error alert for cancellation
+                    alert("cancellation date exceeded the play time "); // Error alert for cancellation
                 }
             } catch (error) {
                 console.error("Error cancelling booking:", error);
@@ -103,10 +104,12 @@ const DashboardPage = () => {
             }
         });
     };
+    const handleUpdateBooking = (id) => {
+        navigate(`/edit-booking/${id}`);
+    }
 
 
-
-// Trigger fetchBookings when "My Bookings" is active
+    // Trigger fetchBookings when "My Bookings" is active
     useEffect(() => {
         if (activeSection === 'mybookings') {
             fetchBookings();
@@ -239,8 +242,8 @@ const DashboardPage = () => {
                         ))}
                         <li
                             style={{ ...styles.menuItem, color: "#ff5252", fontWeight: "bold" }}
-                            onMouseEnter={(e) => (e.target.style.background = "#c62828",e.target.style.color="white")}
-                            onMouseLeave={(e) => (e.target.style.background = "transparent",e.target.style.color="#ff5252")}
+                            onMouseEnter={(e) => (e.target.style.background = "#c62828", e.target.style.color = "white")}
+                            onMouseLeave={(e) => (e.target.style.background = "transparent", e.target.style.color = "#ff5252")}
                             onClick={() => setShowLogoutPopup(true)} // Show popup on click
                         >
                             Logout
@@ -300,11 +303,12 @@ const DashboardPage = () => {
                                             <p><strong>Booking Date:</strong> {booking.date}</p>
                                             <p><strong>Time:</strong> {booking.time.join(' , ')}</p>
                                             <p><strong>Amount Paid:</strong> {booking.payed_amt}</p>
-                                            <p><strong>Turf Name:</strong>{booking.turfname}</p>
+                                            <p><strong>Turf ID:</strong>{booking.turfid}</p>
+                                            <p><strong>Turf Name:</strong>{booking.turfName}</p>
 
                                             {/* Cancel button */}
                                             <button
-                                                onClick={() => handleCancelBooking(booking.turfid, booking.date, booking.time,booking.booking_id)}
+                                                onClick={() => handleCancelBooking(booking.turfid, booking.date, booking.time, booking.booking_id)}
                                                 style={{
                                                     padding: '8px 12px',
                                                     backgroundColor: '#ff0000',
@@ -331,6 +335,7 @@ const DashboardPage = () => {
                                                         >
                                                             Cancel
                                                         </button>
+
                                                         <button
                                                             onClick={() => {
                                                                 onConfirm(); // Execute the callback on confirm
@@ -344,6 +349,24 @@ const DashboardPage = () => {
                                                     </div>
                                                 </div>
                                             )}
+                                            {booking.time.length > 1?(
+                                                <p><button
+                                                onClick={() => handleUpdateBooking(booking.booking_id)}
+                                                style={{
+                                                    padding: '8px 12px',
+                                                    backgroundColor: '#ff0000',
+                                                    color: '#fff',
+                                                    border: 'none',
+                                                    borderRadius: '5px',
+                                                    cursor: 'pointer',
+                                                    marginTop: '10px',
+                                                }}
+                                            >
+                                                Update Ticket
+                                            </button></p>
+                                                ):(<p></p>)
+                                            }
+
                                         </li>
                                     ))}
                                 </ul>
@@ -441,8 +464,8 @@ const styles = {
         position: 'relative',
         top: '0',
         left: '0',
-        height:'650px',
-        marginTop:'25px',
+        height: '650px',
+        marginTop: '25px',
         borderRadius: '15px',
 
 
@@ -483,7 +506,7 @@ const styles = {
 
         margin: '0 auto',
         width: '1000px',
-        height:'400px',
+        height: '400px',
     },
     profileImage: {
         width: '150px',
@@ -597,7 +620,7 @@ const styles = {
     noButton: {
         background: "linear-gradient(45deg, blue, darkblue)",
     },
-    modalStyles : {
+    modalStyles: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -611,7 +634,7 @@ const styles = {
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
         paddingTop: '60px',
     },
-    modalContentStyles : {
+    modalContentStyles: {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         margin: '5% auto',
         padding: '30px 40px', // Increased padding for better spacing
@@ -625,13 +648,13 @@ const styles = {
         fontSize: '16px', // Improved font size for readability
         letterSpacing: '0.5px', // Slightly adjusted letter spacing for a polished effect
     },
-    modalFooterStyles : {
+    modalFooterStyles: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '20px', // Added some space between content and buttons
     },
-    buttoncancelStyles : {
+    buttoncancelStyles: {
         background: "linear-gradient(45deg, blue, darkblue)",
         color: 'white',
         padding: '12px 24px', // Slightly larger padding for a more comfortable button
@@ -642,7 +665,7 @@ const styles = {
         fontSize: '14px', // Increased font size for better readability
         transition: 'all 0.3s ease', // Smooth transition for hover effect
     },
-    buttonconfirmStyles : {
+    buttonconfirmStyles: {
         background: "linear-gradient(45deg, red, darkred)",
         color: 'white',
         padding: '12px 24px', // Slightly larger padding for consistency
@@ -652,7 +675,7 @@ const styles = {
         fontSize: '14px',
         transition: 'all 0.3s ease', // Smooth transition for hover effect
     },
-    h4 : {
+    h4: {
         marginLeft: '0', // Adjusted margin to ensure it's centered or aligned well with the modal
         color: 'red',
         fontSize: '24px', // Increased font size for emphasis

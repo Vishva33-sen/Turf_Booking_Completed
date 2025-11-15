@@ -111,7 +111,7 @@ const PaymentPage = () => {
         const storedEmail = localStorage.getItem("email"); // Retrieve email from local storage
         const authToken = localStorage.getItem("authToken"); // Assuming token is stored in local storage
         console.log("slot_details", storedSelectedSlots);
-
+        console.log("turf_details",storedTurfDetails);
         if (storedTurfDetails && storedSelectedSlots.length > 0 && storedEmail) {
             try {
                 // Group slots by date
@@ -131,13 +131,14 @@ const PaymentPage = () => {
                     payed_amt: storedTurfDetails.price * times.length, // Calculate total amount for the date
                     date, // Use the grouped date
                     time: times, // All times for this date
-                    turfname:storedTurfDetails.turfname,
+                    turfName: storedTurfDetails.turfname
                 }));
 
                 console.log("bookingDetailsArray", bookingDetailsArray);
 
                 // Send each booking detail separately and update the slot status
                 for (const bookingDetails of bookingDetailsArray) {
+                    console.log(bookingDetails.turfName);
                     // Step 1: Send booking details to backend
                     const response = await fetch(`${import.meta.env.VITE_API_URL}/bookings/add`, {
                         method: "POST",
